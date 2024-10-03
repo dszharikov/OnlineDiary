@@ -1,7 +1,10 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace OnlineDiary.Domain.Entities;
 
 public class User
 {
+    [Key]
     public Guid UserId { get; set; } // Первичный ключ
 
     public string Username { get; set; }

@@ -1,7 +1,10 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace OnlineDiary.Domain.Entities;
 
 public class SubjectSubcategory
 {
+    [Key]
     public Guid SubcategoryId { get; set; } // Первичный ключ
 
     public Guid SubjectId { get; set; } // Внешний ключ к Subject

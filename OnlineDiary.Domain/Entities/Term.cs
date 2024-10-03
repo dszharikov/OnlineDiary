@@ -1,7 +1,10 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace OnlineDiary.Domain.Entities;
 
 public class Term
 {
+    [Key]
     public Guid TermId { get; set; } // Первичный ключ
 
     public string Name { get; set; } // Например, "Первый семестр"

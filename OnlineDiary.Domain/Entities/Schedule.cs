@@ -1,7 +1,10 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace OnlineDiary.Domain.Entities;
 
 public class Schedule
 {
+    [Key]
     public Guid ScheduleId { get; set; } // Первичный ключ
 
     public Guid ClassId { get; set; } // Внешний ключ к Class

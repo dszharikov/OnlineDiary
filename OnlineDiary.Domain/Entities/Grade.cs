@@ -1,7 +1,10 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace OnlineDiary.Domain.Entities;
 
 public class Grade
 {
+    [Key]
     public Guid GradeId { get; set; } // Первичный ключ
 
     public Guid StudentId { get; set; } // Внешний ключ к Student

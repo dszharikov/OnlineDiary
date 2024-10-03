@@ -1,7 +1,10 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace OnlineDiary.Domain.Entities;
 
 public class QuarterlyGrade
 {
+    [Key]
     public Guid QuarterlyGradeId { get; set; } // Первичный ключ
 
     public Guid StudentId { get; set; } // Внешний ключ к Student

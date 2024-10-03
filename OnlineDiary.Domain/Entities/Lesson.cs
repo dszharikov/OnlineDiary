@@ -1,12 +1,16 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace OnlineDiary.Domain.Entities;
 
 public class Lesson
 {
+    [Key]
     public Guid LessonId { get; set; } // Первичный ключ
 
     public Guid ScheduleId { get; set; } // Внешний ключ к Schedule
 
     public DateTime Date { get; set; }
+    public bool Skip { get; set; }
 
     public string Topic { get; set; }
 
