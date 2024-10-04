@@ -12,7 +12,6 @@ namespace OnlineDiary.Domain.Interfaces
         IDirectorRepository Directors { get; }
         ITeacherRepository Teachers { get; }
         IStudentRepository Students { get; }
-        IClassLevelRepository ClassLevels { get; }
         IClassRepository Classes { get; }
         ISubjectRepository Subjects { get; }
         ISubjectSubcategoryRepository SubjectSubcategories { get; }
@@ -25,7 +24,6 @@ namespace OnlineDiary.Domain.Interfaces
         IQuarterlySubgradeRepository QuarterlySubgrades { get; }
         IClassLevelSubjectRepository ClassLevelSubjects { get; }
         IClassSubjectRepository ClassSubjects { get; }
-        IHomeroomTeacherRepository HomeroomTeachers { get; }
 
         // Методы для сохранения изменений
         Task<int> SaveChangesAsync();

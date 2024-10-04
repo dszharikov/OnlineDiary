@@ -5,6 +5,8 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineDiary.Domain", "OnlineDiary.Domain\OnlineDiary.Domain.csproj", "{78B75CFD-C97D-4362-985B-308D31CCF0FF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineDiary.Infrastructure", "OnlineDiary.Infrastructure\OnlineDiary.Infrastructure.csproj", "{299D7618-A3CC-4DE1-ACAF-9DCD7B2A91EB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{78B75CFD-C97D-4362-985B-308D31CCF0FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{78B75CFD-C97D-4362-985B-308D31CCF0FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{78B75CFD-C97D-4362-985B-308D31CCF0FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{299D7618-A3CC-4DE1-ACAF-9DCD7B2A91EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{299D7618-A3CC-4DE1-ACAF-9DCD7B2A91EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{299D7618-A3CC-4DE1-ACAF-9DCD7B2A91EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{299D7618-A3CC-4DE1-ACAF-9DCD7B2A91EB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

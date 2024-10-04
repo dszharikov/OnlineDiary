@@ -11,9 +11,7 @@ public class Grade
 
     public Guid LessonId { get; set; } // Внешний ключ к Lesson
 
-    public decimal Value { get; set; } // Значение оценки
-
-    public string Comment { get; set; }
+    public string Value { get; set; } // Значение оценки
 
     // Навигационные свойства
     public Student Student { get; set; }

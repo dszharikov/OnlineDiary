@@ -1,27 +1,20 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace OnlineDiary.Domain.Entities;
 
 public class User
 {
-    [Key]
     public Guid UserId { get; set; } // Первичный ключ
 
-    public string Username { get; set; }
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
 
-    public string PasswordHash { get; set; } // Зашифрованный пароль
+    public string UserName { get; set; }
+    public string Password { get; set; }
 
-    public UserRole Role { get; set; } // Роли: Director, Teacher, Student
-
-    public Guid? SchoolId { get; set; } // Внешний ключ к School
+    public UserRole Role { get; set; }
 
     // Навигационные свойства
-    public School School { get; set; }
-
     public Director Director { get; set; }
-
     public Teacher Teacher { get; set; }
-
     public Student Student { get; set; }
 }
 

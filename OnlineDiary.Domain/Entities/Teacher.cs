@@ -16,9 +16,10 @@ public class Teacher
 
     public School School { get; set; }
 
-    public HomeroomTeacher HomeroomTeacher { get; set; }
-
     public ICollection<ClassSubject> ClassSubjects { get; set; } = new List<ClassSubject>();
 
     public ICollection<Schedule> Schedules { get; set; } = new List<Schedule>();
+
+    public Class HomeroomClass { get; set; } // Если необходимо оставить связь
 }
+

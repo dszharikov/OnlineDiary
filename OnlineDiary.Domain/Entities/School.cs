@@ -22,8 +22,6 @@ public class School
 
     public ICollection<Student> Students { get; set; } = new List<Student>();
 
-    public ICollection<ClassLevel> ClassLevels { get; set; } = new List<ClassLevel>();
-
     public ICollection<Subject> Subjects { get; set; } = new List<Subject>();
 
     public ICollection<Term> Terms { get; set; } = new List<Term>();

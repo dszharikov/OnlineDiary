@@ -4,8 +4,8 @@ namespace OnlineDiary.Domain.Interfaces.Repositories;
 
 public interface IClassLevelSubjectRepository : IRepository<ClassLevelSubject>
 {
-    Task<IEnumerable<ClassLevelSubject>> GetByClassLevelIdAsync(Guid classLevelId);
+    Task<IEnumerable<ClassLevelSubject>> GetByClassLevelIdAsync(int classLevel);
 
-    Task<ClassLevelSubject> GetByClassLevelAndSubjectAsync(Guid classLevelId, Guid subjectId);
+    Task<ClassLevelSubject> GetByClassLevelAndSubjectAsync(int classLevel, Guid subjectId);
 
 }
