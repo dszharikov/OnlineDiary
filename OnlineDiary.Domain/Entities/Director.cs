@@ -1,18 +1,9 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace OnlineDiary.Domain.Entities;
 
-public class Director
+public class Director : User
 {
-    [Key]
-    public Guid DirectorId { get; set; } // Первичный ключ
+    public Guid SchoolId { get; set; } // Foreign Key to School
 
-    public Guid UserId { get; set; } // Внешний ключ к User
-
-    public Guid SchoolId { get; set; } // Внешний ключ к School
-
-    // Навигационные свойства
-    public User User { get; set; }
-
-    public School School { get; set; }
+    // Navigation properties
+    public virtual School School { get; set; }
 }

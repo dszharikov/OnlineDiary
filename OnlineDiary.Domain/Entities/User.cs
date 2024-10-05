@@ -1,8 +1,8 @@
 namespace OnlineDiary.Domain.Entities;
 
-public class User
+public abstract class User
 {
-    public Guid UserId { get; set; } // Первичный ключ
+    public Guid UserId { get; set; } // Primary Key
 
     public string FirstName { get; set; }
     public string LastName { get; set; }
@@ -11,11 +11,6 @@ public class User
     public string Password { get; set; }
 
     public UserRole Role { get; set; }
-
-    // Навигационные свойства
-    public Director Director { get; set; }
-    public Teacher Teacher { get; set; }
-    public Student Student { get; set; }
 }
 
 public enum UserRole
