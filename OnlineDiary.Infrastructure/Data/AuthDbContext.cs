@@ -18,8 +18,8 @@ namespace OnlineDiary.Infrastructure.Data
             base.OnModelCreating(builder);
 
             // Применение конфигураций
-            builder.ApplyConfiguration(new InfrastructureUserConfiguration());
-            builder.ApplyConfiguration(new InfrastructureRoleConfiguration());
+            // builder.ApplyConfiguration(new InfrastructureUserConfiguration());
+            // builder.ApplyConfiguration(new InfrastructureRoleConfiguration());
         }
     }
 }

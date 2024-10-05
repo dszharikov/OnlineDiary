@@ -6,22 +6,38 @@ using OnlineDiary.Infrastructure.UnitOfWorks;
 using OnlineDiary.Infrastructure.Services.Tenant;
 using OnlineDiary.Infrastructure.Services.Authentication;
 using OnlineDiary.Infrastructure.Repositories;
+using Microsoft.Extensions.Configuration;
+using Microsoft.EntityFrameworkCore;
+using OnlineDiary.Infrastructure.Identity;
+using Microsoft.AspNetCore.Identity;
 
 namespace OnlineDiary.Infrastructure.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddInfrastructure(this IServiceCollection services)
+        public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            // Регистрация контекстов базы данных
-            services.AddDbContext<AuthDbContext>(/* настройки */);
-            services.AddDbContext<SchoolDbContext>(/* настройки */);
+            // Регистрация AuthDbContext
+            services.AddDbContext<AuthDbContext>(options =>
+                options.UseNpgsql(configuration.GetConnectionString("AuthConnection")));
+            services.AddDbContext<SchoolDbContext>(
+                options => options.UseNpgsql(configuration.GetConnectionString("SchoolConnection")));
+
+            // Настройка Identity
+            services.AddIdentity<InfrastructureUser, InfrastructureRole>(options =>
+            {
+                options.Password.RequireDigit = true;
+                options.Password.RequiredLength = 6;
+            })
+            .AddEntityFrameworkStores<AuthDbContext>()
+            .AddDefaultTokenProviders();
 
             // Регистрация репозиториев
-             services.AddScoped<ISchoolRepository, SchoolRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IDirectorRepository, DirectorRepository>();
             services.AddScoped<ITeacherRepository, TeacherRepository>();
             services.AddScoped<IStudentRepository, StudentRepository>();
+            services.AddScoped<ISchoolRepository, SchoolRepository>();
             services.AddScoped<IClassRepository, ClassRepository>();
             services.AddScoped<ISubjectRepository, SubjectRepository>();
             services.AddScoped<ISubjectSubcategoryRepository, SubjectSubcategoryRepository>();
@@ -37,6 +53,10 @@ namespace OnlineDiary.Infrastructure.Extensions
 
             // Регистрация UnitOfWork
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            // Регистрация UserManager и RoleManager
+            services.AddScoped<UserManager<InfrastructureUser>>();
+            services.AddScoped<RoleManager<InfrastructureRole>>();
 
             // Регистрация сервисов
             services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
