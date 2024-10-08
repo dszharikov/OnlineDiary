@@ -12,21 +12,21 @@ namespace OnlineDiary.Infrastructure.Repositories
 
         public async Task<IEnumerable<Schedule>> GetByClassIdAsync(Guid classId)
         {
-            return await _context.Schedules
+            return await _dbSet
                 .Where(s => s.ClassSubject.ClassId == classId)
                 .ToListAsync();
         }
 
         public async Task<IEnumerable<Schedule>> GetByDayOfWeekAsync(DayOfWeek dayOfWeek)
         {
-            return await _context.Schedules
+            return await _dbSet
                 .Where(s => s.DayOfWeek == dayOfWeek)
                 .ToListAsync();
         }
 
         public async Task<IEnumerable<Schedule>> GetByTeacherIdAsync(Guid teacherId)
         {
-            return await _context.Schedules
+            return await _dbSet
                 .Where(s => s.ClassSubject.TeacherId == teacherId)
                 .ToListAsync();
         }

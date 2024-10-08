@@ -1,6 +1,9 @@
+using Microsoft.EntityFrameworkCore;
+using Npgsql;
 using OnlineDiary.Domain.Interfaces;
 using OnlineDiary.Domain.Interfaces.Repositories;
 using OnlineDiary.Infrastructure.Data;
+using OnlineDiary.Infrastructure.Exceptions;
 
 namespace OnlineDiary.Infrastructure.UnitOfWorks
 {
@@ -68,13 +71,60 @@ namespace OnlineDiary.Infrastructure.UnitOfWorks
 
         public async Task<int> SaveChangesAsync()
         {
-            return await _context.SaveChangesAsync();
+            using var transaction = await _context.Database.BeginTransactionAsync();
+
+            try
+            {
+                var result = await _context.SaveChangesAsync();
+                await transaction.CommitAsync();
+                return result;
+            }
+            catch (DbUpdateException ex) when (ex.InnerException is PostgresException pgEx)
+            {
+                await transaction.RollbackAsync();
+
+                if (pgEx.SqlState == "23505") // unique_violation
+                {
+                    throw new UniqueConstraintViolationException(pgEx.MessageText);
+                }
+
+                throw;
+            }
+            catch (Exception)
+            {
+                await transaction.RollbackAsync();
+                throw;
+            }
         }
 
         public int SaveChanges()
         {
-            return _context.SaveChanges();
+            using var transaction = _context.Database.BeginTransaction();
+
+            try
+            {
+                var result = _context.SaveChanges();
+                transaction.Commit();
+                return result;
+            }
+            catch (DbUpdateException ex) when (ex.InnerException is PostgresException pgEx)
+            {
+                transaction.Rollback();
+
+                if (pgEx.SqlState == "23505") // unique_violation
+                {
+                    throw new UniqueConstraintViolationException(pgEx.MessageText);
+                }
+
+                throw;
+            }
+            catch (Exception)
+            {
+                transaction.Rollback();
+                throw;
+            }
         }
+
 
         public void Dispose()
         {

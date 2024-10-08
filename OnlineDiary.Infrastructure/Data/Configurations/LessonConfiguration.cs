@@ -27,10 +27,19 @@ public class LessonConfiguration : IEntityTypeConfiguration<Lesson>
         builder.Property(l => l.ScheduleId)
             .IsRequired();
 
+        builder.Property(l => l.ClassSubjectId)
+            .IsRequired();
+
         // Связь с Schedule
         builder.HasOne(l => l.Schedule)
             .WithMany(s => s.Lessons)
             .HasForeignKey(l => l.ScheduleId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        // Связь с ClassSubject
+        builder.HasOne(l => l.ClassSubject)
+            .WithMany(cs => cs.Lessons)
+            .HasForeignKey(l => l.ClassSubjectId)
             .OnDelete(DeleteBehavior.Cascade);
 
         // Связь с Homeworks
@@ -44,5 +53,8 @@ public class LessonConfiguration : IEntityTypeConfiguration<Lesson>
             .WithOne(g => g.Lesson)
             .HasForeignKey(g => g.LessonId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasIndex(l => l.Date)
+            .IsUnique();
     }
 }

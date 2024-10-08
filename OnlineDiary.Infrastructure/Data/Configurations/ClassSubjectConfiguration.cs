@@ -40,5 +40,14 @@ public class ClassSubjectConfiguration : IEntityTypeConfiguration<ClassSubject>
             .WithOne(s => s.ClassSubject)
             .HasForeignKey(s => s.ClassSubjectId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasMany(cs => cs.Lessons)
+            .WithOne(l => l.ClassSubject)
+            .HasForeignKey(l => l.ClassSubjectId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        // Уникальный индекс на комбинацию ClassId и SubjectId
+        builder.HasIndex(cs => new { cs.ClassId, cs.SubjectId })
+            .IsUnique();
     }
 }

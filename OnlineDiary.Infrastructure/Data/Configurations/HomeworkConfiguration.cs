@@ -15,12 +15,13 @@ public class HomeworkConfiguration : IEntityTypeConfiguration<Homework>
         builder.Property(h => h.HomeworkId)
             .ValueGeneratedOnAdd();
 
+        builder.Property(h => h.Title)
+            .IsRequired()
+            .HasMaxLength(150);
+
         builder.Property(h => h.Description)
             .IsRequired()
             .HasMaxLength(1000);
-
-        builder.Property(h => h.DueDate)
-            .IsRequired();
 
         builder.Property(h => h.LessonId)
             .IsRequired();
@@ -30,5 +31,9 @@ public class HomeworkConfiguration : IEntityTypeConfiguration<Homework>
             .WithMany(l => l.Homeworks)
             .HasForeignKey(h => h.LessonId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        // Уникальный индекс на поле LessonId
+        builder.HasIndex(h => h.LessonId)
+            .IsUnique();
     }
 }

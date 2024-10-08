@@ -13,12 +13,6 @@ namespace OnlineDiary.Infrastructure.Data.Configurations
                 .WithMany(c => c.Students)
                 .HasForeignKey(s => s.ClassId)
                 .OnDelete(DeleteBehavior.Cascade);
-
-            // Relationship with School (Many-to-One)
-            builder.HasOne(s => s.School)
-                .WithMany(sch => sch.Students)
-                .HasForeignKey(s => s.SchoolId)
-                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

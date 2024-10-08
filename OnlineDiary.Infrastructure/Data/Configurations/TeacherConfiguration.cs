@@ -8,11 +8,6 @@ namespace OnlineDiary.Infrastructure.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Teacher> builder)
         {
-            // Relationship with School (Many-to-One)
-            builder.HasOne(t => t.School)
-                .WithMany(s => s.Teachers)
-                .HasForeignKey(t => t.SchoolId)
-                .OnDelete(DeleteBehavior.Restrict);
 
             // Relationship with HomeroomClass (One-to-One)
             builder.HasOne(t => t.HomeroomClass)

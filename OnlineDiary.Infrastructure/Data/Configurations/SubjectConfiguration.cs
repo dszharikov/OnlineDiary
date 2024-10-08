@@ -16,14 +16,6 @@ public class SubjectConfiguration : IEntityTypeConfiguration<Subject>
             .IsRequired()
             .HasMaxLength(100);
 
-        builder.Property(s => s.SchoolId)
-            .IsRequired();
-
-        builder.HasOne(s => s.School)
-            .WithMany(sch => sch.Subjects)
-            .HasForeignKey(s => s.SchoolId)
-            .OnDelete(DeleteBehavior.Cascade);
-
         builder.HasMany(s => s.ClassLevelSubjects)
             .WithOne(cls => cls.Subject)
             .HasForeignKey(cls => cls.SubjectId)
@@ -43,5 +35,9 @@ public class SubjectConfiguration : IEntityTypeConfiguration<Subject>
             .WithOne(qg => qg.Subject)
             .HasForeignKey(qg => qg.SubjectId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        // Уникальный индекс на поле Name
+        builder.HasIndex(s => s.Name)
+            .IsUnique(); 
     }
 }

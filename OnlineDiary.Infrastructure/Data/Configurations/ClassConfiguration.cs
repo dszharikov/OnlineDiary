@@ -33,5 +33,9 @@ public class ClassConfiguration : IEntityTypeConfiguration<Class>
             .WithOne(cs => cs.Class)
             .HasForeignKey(cs => cs.ClassId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        // Уникальный индекс на поле Name
+        builder.HasIndex(c => c.Name)
+            .IsUnique();
     }
 }

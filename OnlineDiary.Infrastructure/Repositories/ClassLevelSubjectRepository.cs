@@ -12,14 +12,30 @@ namespace OnlineDiary.Infrastructure.Repositories
 
         public async Task<ClassLevelSubject> GetByClassLevelAndSubjectAsync(int classLevel, Guid subjectId)
         {
-            return await _context.ClassLevelSubjects
+            return await _dbSet
+                .Include(cls => cls.Subject)
                 .FirstOrDefaultAsync(cls => cls.ClassLevel == classLevel && cls.SubjectId == subjectId);
         }
 
-        public async Task<IEnumerable<ClassLevelSubject>> GetByClassLevelIdAsync(int classLevel)
+        public async Task<IEnumerable<ClassLevelSubject>> GetByClassLevelAsync(int classLevel)
         {
-            return await _context.ClassLevelSubjects
+            return await _dbSet
                 .Where(cls => cls.ClassLevel == classLevel)
+                .Include(cls => cls.Subject)
+                .ToListAsync();
+        }
+
+        public override async Task<ClassLevelSubject> GetByIdAsync(Guid id)
+        {
+            return await _dbSet
+                .Include(cls => cls.Subject)
+                .FirstOrDefaultAsync(cls => cls.ClassLevelSubjectId == id);
+        }
+
+        public override async Task<IEnumerable<ClassLevelSubject>> GetAllAsync()
+        {
+            return await _dbSet
+                .Include(cls => cls.Subject)
                 .ToListAsync();
         }
     }

@@ -33,5 +33,9 @@ public class SubjectSubcategoryConfiguration : IEntityTypeConfiguration<SubjectS
             .WithOne(qs => qs.SubjectSubcategory)
             .HasForeignKey(qs => qs.SubcategoryId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        // Уникальный индекс на комбинацию SubjectId и Name
+        builder.HasIndex(ss => new { ss.SubjectId, ss.Name })
+        .IsUnique();
     }
 }

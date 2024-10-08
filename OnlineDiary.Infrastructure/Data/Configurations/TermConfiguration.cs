@@ -25,13 +25,10 @@ public class TermConfiguration : IEntityTypeConfiguration<Term>
         builder.Property(t => t.EndDate)
             .IsRequired();
 
-        builder.Property(t => t.SchoolId)
-            .IsRequired();
-
-        // Связь с School
-        builder.HasOne(t => t.School)
-            .WithMany(s => s.Terms)
-            .HasForeignKey(t => t.SchoolId)
+        // Связь с Schedule
+        builder.HasMany(t => t.Schedules)
+            .WithOne(s => s.Term)
+            .HasForeignKey(s => s.TermId)
             .OnDelete(DeleteBehavior.Cascade);
 
         // Связь с QuarterlyGrades

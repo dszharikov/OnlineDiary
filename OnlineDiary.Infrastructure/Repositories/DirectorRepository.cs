@@ -10,18 +10,24 @@ public class DirectorRepository : BaseRepository<Director>, IDirectorRepository
 {
     public DirectorRepository(SchoolDbContext context) : base(context) { }
 
-    public async Task<Director> GetDirectorByIdAsync(Guid directorId)
-    {
-        return await base.GetByIdAsync(directorId);
-    }
-
     public async Task<Director> GetDirectorBySchoolIdAsync(Guid schoolId)
     {
-        return await _context.Directors.FirstOrDefaultAsync(d => d.SchoolId == schoolId);
+        return await _dbSet
+            .Include(d => d.School)
+            .FirstOrDefaultAsync(d => d.SchoolId == schoolId);
     }
 
-    public async Task<Director> GetDirectorByUserIdAsync(Guid userId)
+    public override async Task<IEnumerable<Director>> GetAllAsync()
     {
-        return await _context.Directors.FirstOrDefaultAsync(d => d.UserId == userId);
+        return await _dbSet
+            .Include(d => d.School)
+            .ToListAsync();
+    }
+
+    public override async Task<Director> GetByIdAsync(Guid id)
+    {
+        return await _dbSet
+            .Include(d => d.School)
+            .FirstOrDefaultAsync(d => d.UserId == id);
     }
 }

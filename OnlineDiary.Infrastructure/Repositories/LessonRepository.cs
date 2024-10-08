@@ -12,14 +12,14 @@ namespace OnlineDiary.Infrastructure.Repositories
 
         public async Task<IEnumerable<Lesson>> GetByDateAsync(DateTime date)
         {
-            return await _context.Lessons
+            return await _dbSet
                 .Where(l => l.Date == date)
                 .ToListAsync();
         }
 
         public async Task<IEnumerable<Lesson>> GetByScheduleIdAsync(Guid scheduleId)
         {
-            return await _context.Lessons
+            return await _dbSet
                 .Where(l => l.ScheduleId == scheduleId)
                 .ToListAsync();
         }

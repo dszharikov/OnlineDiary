@@ -12,7 +12,7 @@ namespace OnlineDiary.Infrastructure.Repositories
 
         public async Task<IEnumerable<QuarterlySubgrade>> GetByQuarterlyGradeIdAsync(Guid quarterlyGradeId)
         {
-            return await _context.QuarterlySubgrades
+            return await _dbSet
                 .Where(q => q.QuarterlyGradeId == quarterlyGradeId)
                 .ToListAsync();
         }

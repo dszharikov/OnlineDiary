@@ -21,6 +21,11 @@ public class ScheduleConfiguration : IEntityTypeConfiguration<Schedule>
         builder.Property(s => s.Time)
             .IsRequired();
 
+        builder.Property(s => s.TermId)
+            .IsRequired();
+
+        builder.Property(s => s.Room);
+
         builder.HasOne(s => s.ClassSubject)
             .WithMany(cs => cs.Schedules)
             .HasForeignKey(s => s.ClassSubjectId)
@@ -29,6 +34,7 @@ public class ScheduleConfiguration : IEntityTypeConfiguration<Schedule>
         builder.HasMany(s => s.Lessons)
             .WithOne(l => l.Schedule)
             .HasForeignKey(l => l.ScheduleId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .OnDelete(DeleteBehavior.ClientSetNull);
+
     }
 }

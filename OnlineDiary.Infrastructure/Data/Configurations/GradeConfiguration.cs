@@ -17,7 +17,7 @@ public class GradeConfiguration : IEntityTypeConfiguration<Grade>
 
         builder.Property(g => g.Value)
             .IsRequired()
-            .HasMaxLength(20); // Установите максимальную длину в соответствии с требованиями
+            .HasMaxLength(20);
 
         builder.Property(g => g.StudentId)
             .IsRequired();
@@ -36,5 +36,9 @@ public class GradeConfiguration : IEntityTypeConfiguration<Grade>
             .WithMany(l => l.Grades)
             .HasForeignKey(g => g.LessonId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        // Уникальный индекс на комбинацию StudentId и LessonId
+        builder.HasIndex(g => new { g.StudentId, g.LessonId })
+            .IsUnique(); 
     }
 }

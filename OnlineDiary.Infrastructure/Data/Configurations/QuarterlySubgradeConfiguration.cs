@@ -40,5 +40,9 @@ public class QuarterlySubgradeConfiguration : IEntityTypeConfiguration<Quarterly
             .WithMany(ssc => ssc.QuarterlySubgrades)
             .HasForeignKey(qs => qs.SubcategoryId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        // Уникальный индекс на комбинацию QuarterlyGradeId и SubcategoryId
+        builder.HasIndex(qs => new { qs.QuarterlyGradeId, qs.SubcategoryId })
+            .IsUnique();
     }
 }

@@ -30,10 +30,6 @@ public class QuarterlyGradeConfiguration : IEntityTypeConfiguration<QuarterlyGra
         builder.Property(qg => qg.TermId)
             .IsRequired();
 
-        // Уникальный индекс на сочетание StudentId, SubjectId, TermId
-        builder.HasIndex(qg => new { qg.StudentId, qg.SubjectId, qg.TermId })
-            .IsUnique();
-
         // Связь с Student
         builder.HasOne(qg => qg.Student)
             .WithMany(s => s.QuarterlyGrades)
@@ -57,5 +53,9 @@ public class QuarterlyGradeConfiguration : IEntityTypeConfiguration<QuarterlyGra
             .WithOne(qs => qs.QuarterlyGrade)
             .HasForeignKey(qs => qs.QuarterlyGradeId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        // Уникальный индекс на сочетание StudentId, SubjectId, TermId
+        builder.HasIndex(qg => new { qg.StudentId, qg.SubjectId, qg.TermId })
+            .IsUnique();
     }
 }
