@@ -9,9 +9,9 @@ public class Homework
 
     public Guid LessonId { get; set; } // Внешний ключ к Lesson
 
-    public string Description { get; set; }
+    public string Title { get; set; }
 
-    public DateTime DueDate { get; set; }
+    public string Description { get; set; }
 
     // Навигационные свойства
     public Lesson Lesson { get; set; }

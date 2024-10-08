@@ -4,6 +4,6 @@ namespace OnlineDiary.Domain.Interfaces.Repositories;
 
 public interface IHomeworkRepository : IRepository<Homework>
 {
-    Task<IEnumerable<Homework>> GetByLessonIdAsync(Guid lessonId);
-    Task<IEnumerable<Homework>> GetByDueDateAsync(DateTime dueDate);
+    Task<Homework> GetByLessonIdAsync(Guid lessonId);
+    Task<IEnumerable<Homework>> GetActualHomeworkByStudentIdAsync(Guid studentId);
 }

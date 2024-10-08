@@ -13,10 +13,8 @@ public class Term
 
     public DateTime EndDate { get; set; }
 
-    public Guid SchoolId { get; set; } // Внешний ключ к School
-
     // Навигационные свойства
-    public School School { get; set; }
-
     public ICollection<QuarterlyGrade> QuarterlyGrades { get; set; } = new List<QuarterlyGrade>();
+
+    public ICollection<Schedule> Schedules { get; set; } = new List<Schedule>();
 }

@@ -13,8 +13,13 @@ public class Schedule
 
     public TimeSpan Time { get; set; }
 
+    public string Room { get; set; }
+    public Guid TermId { get; set; } // Внешний ключ к Term
+
     // Навигационные свойства
     public ClassSubject ClassSubject { get; set; }
 
     public ICollection<Lesson> Lessons { get; set; } = new List<Lesson>();
+
+    public Term Term { get; set; }
 }

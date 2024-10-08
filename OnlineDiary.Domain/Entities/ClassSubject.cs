@@ -21,4 +21,5 @@ public class ClassSubject
     public Teacher Teacher { get; set; }
 
     public ICollection<Schedule> Schedules { get; set; } = new List<Schedule>();
+    public ICollection<Lesson> Lessons { get; set; } = new List<Lesson>();
 }

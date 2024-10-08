@@ -8,6 +8,7 @@ public class Lesson
     public Guid LessonId { get; set; } // Первичный ключ
 
     public Guid ScheduleId { get; set; } // Внешний ключ к Schedule
+    public Guid ClassSubjectId { get; set; }
 
     public DateTime Date { get; set; }
     public bool Skip { get; set; }
@@ -16,6 +17,7 @@ public class Lesson
 
     // Навигационные свойства
     public Schedule Schedule { get; set; }
+    public ClassSubject ClassSubject { get; set; }
 
     public ICollection<Homework> Homeworks { get; set; } = new List<Homework>();
 

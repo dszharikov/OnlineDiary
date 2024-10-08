@@ -9,11 +9,6 @@ public class Subject
 
     public string Name { get; set; }
 
-    public Guid SchoolId { get; set; } // Внешний ключ к School
-
-    // Навигационные свойства
-    public School School { get; set; }
-
     public ICollection<ClassLevelSubject> ClassLevelSubjects { get; set; } = new List<ClassLevelSubject>();
 
     public ICollection<SubjectSubcategory> SubjectSubcategories { get; set; } = new List<SubjectSubcategory>();
