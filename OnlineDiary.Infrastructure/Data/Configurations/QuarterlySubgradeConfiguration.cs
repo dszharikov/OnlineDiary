@@ -19,20 +19,25 @@ public class QuarterlySubgradeConfiguration : IEntityTypeConfiguration<Quarterly
             .IsRequired()
             .HasColumnType("decimal(5,2)");
 
-        builder.Property(qs => qs.QuarterlyGradeId)
+        builder.Property(qs => qs.ClassSubjectId)
+            .IsRequired();
+
+        builder.Property(qs => qs.StudentId)
             .IsRequired();
 
         builder.Property(qs => qs.SubcategoryId)
             .IsRequired();
 
-        // Уникальный индекс на сочетание QuarterlyGradeId и SubcategoryId
-        builder.HasIndex(qs => new { qs.QuarterlyGradeId, qs.SubcategoryId })
-            .IsUnique();
+        // Связь с ClassSubject
+        builder.HasOne(qs => qs.ClassSubject)
+            .WithMany(cs => cs.QuarterlySubgrades)
+            .HasForeignKey(qs => qs.ClassSubjectId)
+            .OnDelete(DeleteBehavior.Cascade);
 
-        // Связь с QuarterlyGrade
-        builder.HasOne(qs => qs.QuarterlyGrade)
-            .WithMany(qg => qg.QuarterlySubgrades)
-            .HasForeignKey(qs => qs.QuarterlyGradeId)
+        // Связь с ClassSubject
+        builder.HasOne(qs => qs.Student)
+            .WithMany(st => st.QuarterlySubgrades)
+            .HasForeignKey(qs => qs.StudentId)
             .OnDelete(DeleteBehavior.Cascade);
 
         // Связь с SubjectSubcategory
@@ -41,8 +46,14 @@ public class QuarterlySubgradeConfiguration : IEntityTypeConfiguration<Quarterly
             .HasForeignKey(qs => qs.SubcategoryId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        // Уникальный индекс на комбинацию QuarterlyGradeId и SubcategoryId
-        builder.HasIndex(qs => new { qs.QuarterlyGradeId, qs.SubcategoryId })
+        // Связь с Term
+        builder.HasOne(qs => qs.Term)
+            .WithMany(t => t.QuarterlySubgrades)
+            .HasForeignKey(qs => qs.TermId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        // Уникальный индекс на комбинацию QuarterlyGradeId, SubcategoryId и TermId
+        builder.HasIndex(qs => new { qs.StudentId, qs.SubcategoryId, qs.TermId })
             .IsUnique();
     }
 }

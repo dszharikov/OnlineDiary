@@ -36,5 +36,8 @@ public class ScheduleConfiguration : IEntityTypeConfiguration<Schedule>
             .HasForeignKey(l => l.ScheduleId)
             .OnDelete(DeleteBehavior.ClientSetNull);
 
+        builder.HasIndex(s => new { s.ClassSubjectId, s.DayOfWeek, s.Time, s.TermId })
+            .IsUnique();
+
     }
 }

@@ -53,8 +53,5 @@ public class LessonConfiguration : IEntityTypeConfiguration<Lesson>
             .WithOne(g => g.Lesson)
             .HasForeignKey(g => g.LessonId)
             .OnDelete(DeleteBehavior.Cascade);
-
-        builder.HasIndex(l => l.Date)
-            .IsUnique();
     }
 }

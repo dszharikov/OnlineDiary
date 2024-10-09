@@ -9,4 +9,5 @@ public class Student : User
 
     public virtual ICollection<Grade> Grades { get; set; } = new List<Grade>();
     public virtual ICollection<QuarterlyGrade> QuarterlyGrades { get; set; } = new List<QuarterlyGrade>();
+    public virtual ICollection<QuarterlySubgrade> QuarterlySubgrades { get; set; } = new List<QuarterlySubgrade>();
 }

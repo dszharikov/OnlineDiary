@@ -17,4 +17,5 @@ public class Term
     public ICollection<QuarterlyGrade> QuarterlyGrades { get; set; } = new List<QuarterlyGrade>();
 
     public ICollection<Schedule> Schedules { get; set; } = new List<Schedule>();
+    public ICollection<QuarterlySubgrade> QuarterlySubgrades { get; set; } = new List<QuarterlySubgrade>();
 }

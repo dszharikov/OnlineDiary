@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using OnlineDiary.Domain.Entities;
-using OnlineDiary.Domain.Interfaces;
 using OnlineDiary.Domain.Interfaces.Repositories;
 using OnlineDiary.Infrastructure.Data;
 
@@ -17,11 +16,11 @@ public class DirectorRepository : BaseRepository<Director>, IDirectorRepository
             .FirstOrDefaultAsync(d => d.SchoolId == schoolId);
     }
 
-    public override async Task<IEnumerable<Director>> GetAllAsync()
+    public async Task<Director> GetCurrentDirectorAsync()
     {
         return await _dbSet
             .Include(d => d.School)
-            .ToListAsync();
+            .FirstOrDefaultAsync();
     }
 
     public override async Task<Director> GetByIdAsync(Guid id)

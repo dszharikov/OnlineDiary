@@ -22,4 +22,5 @@ public class ClassSubject
 
     public ICollection<Schedule> Schedules { get; set; } = new List<Schedule>();
     public ICollection<Lesson> Lessons { get; set; } = new List<Lesson>();
+    public ICollection<QuarterlySubgrade> QuarterlySubgrades { get; set; } = new List<QuarterlySubgrade>();
 }

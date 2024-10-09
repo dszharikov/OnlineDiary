@@ -4,11 +4,9 @@ namespace OnlineDiary.Domain.Interfaces.Repositories;
 
 public interface IScheduleRepository : IRepository<Schedule>
 {
-    Task<IEnumerable<Schedule>> GetByClassIdAsync(Guid classId);
-
-    Task<IEnumerable<Schedule>> GetByTeacherIdAsync(Guid teacherId);
+    Task<IEnumerable<Schedule>> GetByTermTeacherAsync(Guid termId, Guid teacherId);
 
     Task<IEnumerable<Schedule>> GetByDayOfWeekAsync(DayOfWeek dayOfWeek);
-
-    // Дополнительные методы по необходимости
+    Task<IEnumerable<Schedule>> GetByTermClassAsync(Guid termId, Guid classId);
+    Task<Schedule> GetByTermClassSubjectDayOfWeekTimeAsync(Guid termId, Guid classSubjectId, DayOfWeek dayOfWeek, TimeSpan time);
 }

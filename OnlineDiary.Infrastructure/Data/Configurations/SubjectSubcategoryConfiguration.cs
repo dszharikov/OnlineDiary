@@ -36,6 +36,6 @@ public class SubjectSubcategoryConfiguration : IEntityTypeConfiguration<SubjectS
 
         // Уникальный индекс на комбинацию SubjectId и Name
         builder.HasIndex(ss => new { ss.SubjectId, ss.Name })
-        .IsUnique();
+            .IsUnique();
     }
 }

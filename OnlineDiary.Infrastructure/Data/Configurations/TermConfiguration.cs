@@ -36,5 +36,11 @@ public class TermConfiguration : IEntityTypeConfiguration<Term>
             .WithOne(qg => qg.Term)
             .HasForeignKey(qg => qg.TermId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        // Связь с QuarterlySubgrades
+        builder.HasMany(t => t.QuarterlySubgrades)
+            .WithOne(qs => qs.Term)
+            .HasForeignKey(qs => qs.TermId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

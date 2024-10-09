@@ -13,6 +13,21 @@ namespace OnlineDiary.Infrastructure.Data.Configurations
                 .WithMany(c => c.Students)
                 .HasForeignKey(s => s.ClassId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasMany(st => st.Grades)
+                .WithOne(g => g.Student)
+                .HasForeignKey(g => g.StudentId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasMany(st => st.QuarterlyGrades)
+                .WithOne(qg => qg.Student)
+                .HasForeignKey(qg => qg.StudentId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasMany(st => st.QuarterlySubgrades)
+                .WithOne(qs => qs.Student)
+                .HasForeignKey(qs => qs.StudentId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

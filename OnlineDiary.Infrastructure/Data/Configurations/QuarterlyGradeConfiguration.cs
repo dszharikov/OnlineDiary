@@ -48,12 +48,6 @@ public class QuarterlyGradeConfiguration : IEntityTypeConfiguration<QuarterlyGra
             .HasForeignKey(qg => qg.TermId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        // Связь с QuarterlySubgrades
-        builder.HasMany(qg => qg.QuarterlySubgrades)
-            .WithOne(qs => qs.QuarterlyGrade)
-            .HasForeignKey(qs => qs.QuarterlyGradeId)
-            .OnDelete(DeleteBehavior.Cascade);
-
         // Уникальный индекс на сочетание StudentId, SubjectId, TermId
         builder.HasIndex(qg => new { qg.StudentId, qg.SubjectId, qg.TermId })
             .IsUnique();
