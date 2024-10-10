@@ -6,12 +6,4 @@ namespace OnlineDiary.Presentation.Controllers;
 [ApiController]
 public class StudentController : BaseController
 {
-    [HttpPost]
-    public async Task<IActionResult> CreateStudent([FromBody] Student student)
-    {
-        var result = await _studentService.CreateStudent(student);
-
-        
-        return Ok(result);
-    }
 }

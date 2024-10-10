@@ -18,12 +18,12 @@ public class JwtTokenGenerator : IJwtTokenGenerator
     public string GenerateToken(string userId, string userName, string role, string schoolId)
     {
         var claims = new List<Claim>
-        {
-            new Claim(JwtRegisteredClaimNames.Sub, userId),
-            new Claim(JwtRegisteredClaimNames.UniqueName, userName),
-            new Claim(ClaimTypes.Role, role),
-            new Claim("school_id", schoolId)
-        };
+    {
+        new Claim(ClaimTypes.NameIdentifier, userId), // Изменили на ClaimTypes.NameIdentifier
+        new Claim(JwtRegisteredClaimNames.UniqueName, userName),
+        new Claim(ClaimTypes.Role, role),
+        new Claim("school_id", schoolId)
+    };
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -42,4 +42,5 @@ public class JwtTokenGenerator : IJwtTokenGenerator
 
         return tokenHandler.WriteToken(token);
     }
+
 }

@@ -16,7 +16,7 @@ public class SchoolDbContextFactory : IDesignTimeDbContextFactory<SchoolDbContex
             .Build();
 
         // Получаем строку подключения из конфигурации
-        var connectionString = configuration.GetConnectionString("DefaultConnection");
+        var connectionString = configuration.GetConnectionString("SchoolConnection");
 
         // Создаем опции для контекста
         var optionsBuilder = new DbContextOptionsBuilder<SchoolDbContext>();

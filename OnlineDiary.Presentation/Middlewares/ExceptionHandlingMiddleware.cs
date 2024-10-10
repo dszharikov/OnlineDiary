@@ -22,6 +22,7 @@ public class ExceptionHandlingMiddleware
         {
             await _next(context);
         }
+        // База данных
         catch (UniqueConstraintViolationException ex)
         {
             _logger.LogWarning(ex, "Unique constraint violation.");
@@ -34,7 +35,8 @@ public class ExceptionHandlingMiddleware
             };
             await context.Response.WriteAsJsonAsync(problemDetails);
         }
-        catch (FluentValidation.ValidationException ex)
+        // Валидация
+        catch (ValidationException ex)
         {
             _logger.LogWarning(ex, "Validation errors.");
 
@@ -55,6 +57,7 @@ public class ExceptionHandlingMiddleware
             context.Response.StatusCode = StatusCodes.Status400BadRequest;
             await context.Response.WriteAsJsonAsync(problemDetails);
         }
+        // Не найдено
         catch (NotFoundException ex)
         {
             _logger.LogWarning(ex, "Resource not found.");
@@ -67,6 +70,7 @@ public class ExceptionHandlingMiddleware
             };
             await context.Response.WriteAsJsonAsync(problemDetails);
         }
+        // Нет доступа
         catch (AuthorizationException ex)
         {
             _logger.LogWarning(ex, "Authorization error.");
@@ -79,6 +83,19 @@ public class ExceptionHandlingMiddleware
             };
             await context.Response.WriteAsJsonAsync(problemDetails);
         }
+        // Дублирование данных
+        catch (DuplicateException ex){
+            _logger.LogWarning(ex, "Duplicate error.");
+            context.Response.StatusCode = StatusCodes.Status409Conflict;
+            var problemDetails = new ProblemDetails
+            {
+                Title = "Conflict",
+                Detail = ex.Message,
+                Status = StatusCodes.Status409Conflict
+            };
+            await context.Response.WriteAsJsonAsync(problemDetails);
+        }
+        // Ошибка сервера
         catch (Exception ex)
         {
             _logger.LogError(ex, "An unhandled exception occurred.");

@@ -10,6 +10,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using OnlineDiary.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
+using OnlineDiary.Application.Interfaces;
+using OnlineDiary.Infrastructure.Services;
 
 namespace OnlineDiary.Infrastructure.Extensions
 {
@@ -20,14 +22,25 @@ namespace OnlineDiary.Infrastructure.Extensions
             // Регистрация AuthDbContext
             services.AddDbContext<AuthDbContext>(options =>
                 options.UseNpgsql(configuration.GetConnectionString("AuthConnection")));
-            services.AddDbContext<SchoolDbContext>(
-                options => options.UseNpgsql(configuration.GetConnectionString("SchoolConnection")));
+                
+            // Регистрация SchoolDbContext с динамической схемой
+            services.AddDbContext<SchoolDbContext>((serviceProvider, options) =>
+            {
+                var tenantService = serviceProvider.GetRequiredService<ITenantService>();
+
+                // Вызываем OnConfiguring вручную для правильной настройки
+                options.UseNpgsql(configuration.GetConnectionString("SchoolConnection"), npgsqlOptions =>
+                {
+                    npgsqlOptions.MigrationsAssembly("OnlineDiary.Infrastructure");
+                    npgsqlOptions.MigrationsHistoryTable("__EFMigrationsHistory", tenantService.SchoolId);
+                });
+            });
 
             // Настройка Identity
             services.AddIdentity<InfrastructureUser, InfrastructureRole>(options =>
             {
                 options.Password.RequireDigit = true;
-                options.Password.RequiredLength = 6;
+                options.Password.RequiredLength = 8;
             })
             .AddEntityFrameworkStores<AuthDbContext>()
             .AddDefaultTokenProviders();
@@ -57,6 +70,10 @@ namespace OnlineDiary.Infrastructure.Extensions
             // Регистрация UserManager и RoleManager
             services.AddScoped<UserManager<InfrastructureUser>>();
             services.AddScoped<RoleManager<InfrastructureRole>>();
+
+            // Регистрация CurrentUserService
+            services.AddHttpContextAccessor();
+            services.AddScoped<ICurrentUserService, CurrentUserService>();
 
             // Регистрация сервисов
             services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();

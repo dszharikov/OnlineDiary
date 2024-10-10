@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using OnlineDiary.Infrastructure.Data.Configurations.Auth;
 using OnlineDiary.Infrastructure.Identity;
 
 namespace OnlineDiary.Infrastructure.Data
@@ -11,6 +10,7 @@ namespace OnlineDiary.Infrastructure.Data
             : base(options)
         {
         }
+    
 
         // Дополнительные настройки
         protected override void OnModelCreating(ModelBuilder builder)

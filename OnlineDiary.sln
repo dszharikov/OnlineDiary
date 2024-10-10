@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineDiary.Domain", "Onlin
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineDiary.Infrastructure", "OnlineDiary.Infrastructure\OnlineDiary.Infrastructure.csproj", "{299D7618-A3CC-4DE1-ACAF-9DCD7B2A91EB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineDiary.Presentation", "OnlineDiary.Presentation\OnlineDiary.Presentation.csproj", "{C8F4B2D1-BECC-444B-86F1-5B154713A050}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineDiary.Application", "OnlineDiary.Application\OnlineDiary.Application.csproj", "{6AFB7007-3775-4114-B1A0-6CF200A134BD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +28,13 @@ Global
 		{299D7618-A3CC-4DE1-ACAF-9DCD7B2A91EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{299D7618-A3CC-4DE1-ACAF-9DCD7B2A91EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{299D7618-A3CC-4DE1-ACAF-9DCD7B2A91EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8F4B2D1-BECC-444B-86F1-5B154713A050}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8F4B2D1-BECC-444B-86F1-5B154713A050}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8F4B2D1-BECC-444B-86F1-5B154713A050}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8F4B2D1-BECC-444B-86F1-5B154713A050}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6AFB7007-3775-4114-B1A0-6CF200A134BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6AFB7007-3775-4114-B1A0-6CF200A134BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6AFB7007-3775-4114-B1A0-6CF200A134BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6AFB7007-3775-4114-B1A0-6CF200A134BD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

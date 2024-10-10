@@ -55,24 +55,8 @@ public class SchoolDbContext : DbContext
         string schema = _tenantService.SchoolId;
         modelBuilder.HasDefaultSchema(schema);
 
-        // Применение конфигураций
-        modelBuilder.ApplyConfiguration(new UserConfiguration());
-        modelBuilder.ApplyConfiguration(new DirectorConfiguration());
-        modelBuilder.ApplyConfiguration(new TeacherConfiguration());
-        modelBuilder.ApplyConfiguration(new StudentConfiguration());
-        modelBuilder.ApplyConfiguration(new SchoolConfiguration());
-        modelBuilder.ApplyConfiguration(new ClassConfiguration());
-        modelBuilder.ApplyConfiguration(new SubjectConfiguration());
-        modelBuilder.ApplyConfiguration(new SubjectSubcategoryConfiguration());
-        modelBuilder.ApplyConfiguration(new TermConfiguration());
-        modelBuilder.ApplyConfiguration(new ScheduleConfiguration());
-        modelBuilder.ApplyConfiguration(new LessonConfiguration());
-        modelBuilder.ApplyConfiguration(new HomeworkConfiguration());
-        modelBuilder.ApplyConfiguration(new GradeConfiguration());
-        modelBuilder.ApplyConfiguration(new QuarterlyGradeConfiguration());
-        modelBuilder.ApplyConfiguration(new QuarterlySubgradeConfiguration());
-        modelBuilder.ApplyConfiguration(new ClassLevelSubjectConfiguration());
-        modelBuilder.ApplyConfiguration(new ClassSubjectConfiguration());
+        // Применение всех конфигураций сущностей
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(SchoolDbContext).Assembly);
 
         base.OnModelCreating(modelBuilder);
     }
