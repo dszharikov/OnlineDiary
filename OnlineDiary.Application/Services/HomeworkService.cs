@@ -43,6 +43,13 @@ public class HomeworkService : IHomeworkService
         return homeworks;
     }
 
+    public async Task<Homework> GetHomeworkByLessonIdAsync(Guid lessonId)
+    {
+        var homework = await _unitOfWork.Homeworks.GetByLessonIdAsync(lessonId);
+
+        return homework;
+    }
+
     public async Task CreateHomeworkAsync(Homework homework)
     {
         var homeworkEntity = await _unitOfWork.Homeworks.GetByLessonIdAsync(homework.LessonId);
@@ -81,4 +88,6 @@ public class HomeworkService : IHomeworkService
         _unitOfWork.Homeworks.Remove(homework);
         await _unitOfWork.SaveChangesAsync();
     }
+
+    
 }

@@ -9,11 +9,10 @@ namespace OnlineDiary.Infrastructure.Repositories
     {
         public ClassRepository(SchoolDbContext context) : base(context) { }
 
-        public override async Task<IEnumerable<Class>> GetAllAsync()
+        public override async Task<IQueryable<Class>> GetAllAsync()
         {
-            return await _dbSet
-                .Include(c => c.HomeroomTeacher)
-                .ToListAsync();
+            return _dbSet
+                .Include(c => c.HomeroomTeacher);
         }
 
         public override async Task<Class> GetByIdAsync(Guid id)

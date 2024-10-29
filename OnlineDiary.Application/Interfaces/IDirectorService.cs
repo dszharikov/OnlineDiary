@@ -6,6 +6,6 @@ public interface IDirectorService
 {
     Task<Director> GetCurrentDirectorAsync();
     Task CreateDirectorAsync(Director dto);
-    Task UpdateDirectorAsync(Guid directorId, Director dto);
+    Task UpdateDirectorAsync(Director dto);
     Task DeleteDirectorAsync(Guid directorId);
 }

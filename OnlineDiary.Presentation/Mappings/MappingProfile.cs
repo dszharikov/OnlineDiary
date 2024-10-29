@@ -13,8 +13,9 @@ using OnlineDiary.Presentation.DTOs.TeacherDtos;
 using OnlineDiary.Presentation.DTOs.TermDtos;
 using OnlineDiary.Presentation.DTOs.UserDtos;
 using OnlineDiary.Domain.Entities;
+using OnlineDiary.Application.Pagination;
 
-namespace OnlineDiary.Application.Mappings;
+namespace OnlineDiary.Presentation.Mappings;
 
 public class MappingProfile : Profile
 {
@@ -98,5 +99,9 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.LessonDate, opt => opt.MapFrom(src => src.Lesson.Date));
         CreateMap<CreateHomeworkDto, Homework>();
         CreateMap<UpdateHomeworkDto, Homework>();
+
+        CreateMap(typeof(PaginationResponseDto<>), typeof(PaginationResponseDto<>))
+            .ConvertUsing(typeof(PaginationResponseConverter<,>));
     }
 }
+

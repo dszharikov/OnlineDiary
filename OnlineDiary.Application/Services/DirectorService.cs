@@ -42,12 +42,12 @@ public class DirectorService : IDirectorService
         await _unitOfWork.SaveChangesAsync();
     }
 
-    public async Task UpdateDirectorAsync(Guid directorId, Director updatedDirector)
+    public async Task UpdateDirectorAsync(Director updatedDirector)
     {
-        var director = await _unitOfWork.Directors.GetByIdAsync(directorId);
+        var director = await _unitOfWork.Directors.GetCurrentDirectorAsync();
         if (director == null)
         {
-            throw new NotFoundException($"Директор с ID {directorId} не найден.");
+            throw new NotFoundException($"Директор не найден.");
         }
 
         _mapper.Map(updatedDirector, director); // Обновляем сущность через маппинг

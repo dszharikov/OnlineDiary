@@ -12,6 +12,7 @@ using OnlineDiary.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using OnlineDiary.Application.Interfaces;
 using OnlineDiary.Infrastructure.Services;
+using OnlineDiary.Application.Pagination;
 
 namespace OnlineDiary.Infrastructure.Extensions
 {
@@ -79,6 +80,7 @@ namespace OnlineDiary.Infrastructure.Extensions
             services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
             services.AddScoped<IPasswordHasher, PasswordHasher>();
             services.AddScoped<ITenantService, TenantService>();
+            services.AddScoped<IPaginationService, PaginationService>();
 
             return services;
         }

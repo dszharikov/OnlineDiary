@@ -17,5 +17,6 @@ public enum UserRole
 {
     Director,
     Teacher,
-    Student
+    Student,
+    Administrator
 }

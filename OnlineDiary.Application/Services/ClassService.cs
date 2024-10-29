@@ -1,6 +1,7 @@
 using AutoMapper;
 using OnlineDiary.Application.Exceptions;
 using OnlineDiary.Application.Interfaces;
+using OnlineDiary.Application.Pagination;
 using OnlineDiary.Domain.Entities;
 using OnlineDiary.Domain.Interfaces;
 
@@ -10,13 +11,16 @@ public class ClassService : IClassService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
+    private readonly IPaginationService _paginationService;
 
     public ClassService(
         IUnitOfWork unitOfWork,
-        IMapper mapper)
+        IMapper mapper,
+        IPaginationService paginationService)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
+        _paginationService = paginationService;
     }
 
     public async Task<Class> GetClassByIdAsync(Guid classId)
@@ -30,10 +34,11 @@ public class ClassService : IClassService
         return @class;
     }
 
-    public async Task<IEnumerable<Class>> GetAllClassesAsync()
+    public async Task<PaginationResponseDto<Class>> GetClasses(PaginationRequestDto paginationRequest)
     {
         var classes = await _unitOfWork.Classes.GetAllAsync();
-        return classes;
+
+        return await _paginationService.PaginateAsync(classes, paginationRequest);
     }
 
     public async Task CreateClassAsync(Class @class)
@@ -87,4 +92,6 @@ public class ClassService : IClassService
             throw new DuplicateException("Класс с таким названием уже существует.");
         }
     }
+
+    
 }

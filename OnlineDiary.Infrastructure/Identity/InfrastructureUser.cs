@@ -12,4 +12,8 @@ public class InfrastructureUser : IdentityUser<Guid>
     public virtual ICollection<IdentityUserLogin<Guid>> Logins { get; set; }
     public virtual ICollection<IdentityUserToken<Guid>> Tokens { get; set; }
     public virtual ICollection<IdentityUserRole<Guid>> UserRoles { get; set; }
+
+    // Добавляем RefreshToken и срок его действия
+    public string RefreshToken { get; set; }
+    public DateTime RefreshTokenExpiryTime { get; set; }
 }

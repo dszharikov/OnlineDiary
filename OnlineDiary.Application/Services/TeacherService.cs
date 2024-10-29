@@ -1,6 +1,9 @@
 using AutoMapper;
 using OnlineDiary.Application.Exceptions;
+using OnlineDiary.Application.Filters;
+using OnlineDiary.Application.Filters.Teachers;
 using OnlineDiary.Application.Interfaces;
+using OnlineDiary.Application.Pagination;
 using OnlineDiary.Domain.Entities;
 using OnlineDiary.Domain.Interfaces;
 
@@ -10,13 +13,19 @@ public class TeacherService : ITeacherService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
+    private readonly IPaginationService _paginationService;
+    private readonly IFilter<Teacher> _teacherFilter;
 
     public TeacherService(
         IUnitOfWork unitOfWork,
-        IMapper mapper)
+        IMapper mapper, 
+        IPaginationService paginationService,
+        IFilter<Teacher> teacherFilter)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
+        _paginationService = paginationService;
+        _teacherFilter = teacherFilter;
     }
 
     public async Task<Teacher> GetTeacherByIdAsync(Guid teacherId)
@@ -30,10 +39,15 @@ public class TeacherService : ITeacherService
         return teacher;
     }
 
-    public async Task<IEnumerable<Teacher>> GetAllTeachersAsync()
+    public async Task<PaginationResponseDto<Teacher>> GetAllTeachersAsync(
+        PaginationAndFilterRequestDto<TeacherFilterRequestDto> paginationRequestDto)
     {
-        var teachers = await _unitOfWork.Teachers.GetAllAsync();
-        return teachers;
+        var query = await _unitOfWork.Teachers.GetAllAsync();
+
+        query = _teacherFilter.Apply(query, paginationRequestDto.Filter);
+
+        var paginatedTeachers = await _paginationService.PaginateAsync(query, paginationRequestDto.Pagination);
+        return paginatedTeachers;
     }
 
     public async Task CreateTeacherAsync(Teacher teacher)
