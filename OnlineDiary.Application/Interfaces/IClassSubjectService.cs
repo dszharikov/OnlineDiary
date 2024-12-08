@@ -1,3 +1,5 @@
+using OnlineDiary.Application.Filters.ClassSubjects;
+using OnlineDiary.Application.Pagination;
 using OnlineDiary.Domain.Entities;
 
 namespace OnlineDiary.Application.Interfaces;
@@ -5,7 +7,9 @@ namespace OnlineDiary.Application.Interfaces;
 public interface IClassSubjectService
 {
     Task<ClassSubject> GetClassSubjectByIdAsync(Guid classSubjectId);
-    Task<IEnumerable<ClassSubject>> GetAllClassSubjectsAsync();
+    Task<ClassSubject> GetClassSubjectByClassIdAndSubjectIdAsync(Guid classId, Guid subjectId);
+    Task<PaginationResponseDto<ClassSubject>> GetClassSubjectsAsync(
+        PaginationAndFilterRequestDto<ClassSubjectFilterRequestDto> paginationAndFilterRequestDto);
     Task<IEnumerable<ClassSubject>> GetClassSubjectsBySubjectIdAsync(Guid subjectId);
     Task<IEnumerable<ClassSubject>> GetClassSubjectsByTeacherIdAsync(Guid teacherId);
     Task<IEnumerable<ClassSubject>> GetClassSubjectsByClassIdAsync(Guid classId);

@@ -8,5 +8,5 @@ public interface IScheduleRepository : IRepository<Schedule>
 
     Task<IEnumerable<Schedule>> GetByDayOfWeekAsync(DayOfWeek dayOfWeek);
     Task<IEnumerable<Schedule>> GetByTermClassAsync(Guid termId, Guid classId);
-    Task<Schedule> GetByTermClassSubjectDayOfWeekTimeAsync(Guid termId, Guid classSubjectId, DayOfWeek dayOfWeek, TimeSpan time);
+    Task<Schedule> GetByTermClassSubjectDayOfWeekTimeAsync(Guid termId, Guid classSubjectId, DayOfWeek dayOfWeek, TimeOnly time);
 }

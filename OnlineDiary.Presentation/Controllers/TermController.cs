@@ -3,6 +3,7 @@ using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OnlineDiary.Application.Interfaces;
+using OnlineDiary.Application.Pagination;
 using OnlineDiary.Presentation.DTOs.TermDtos;
 
 namespace OnlineDiary.Presentation.Controllers;
@@ -28,13 +29,17 @@ public class TermController : BaseController
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetTerms()
+    [Authorize(Roles = "Director")]
+    public async Task<IActionResult> GetTerms([FromQuery] PaginationRequestDto paginationRequest)
     {
-        var terms = await _termService.GetAllTermsAsync();
+        var paginationResult = await _termService.GetTermsAsync(paginationRequest);
 
-        return Ok(_mapper.Map<IEnumerable<TermDto>>(terms));
+        var mappedResult = _mapper.Map<PaginationResponseDto<TermDto>>(paginationResult);
+
+        return Ok(mappedResult);
     }
 
+    [Authorize(Roles = "Director")]
     [HttpGet("{termId}")]
     public async Task<IActionResult> GetTermById(Guid termId)
     {

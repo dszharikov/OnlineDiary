@@ -12,6 +12,7 @@ namespace OnlineDiary.Infrastructure.Repositories
         public override async Task<IQueryable<Class>> GetAllAsync()
         {
             return _dbSet
+                .OrderBy(c => c.ClassLevel)
                 .Include(c => c.HomeroomTeacher);
         }
 

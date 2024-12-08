@@ -33,7 +33,7 @@ public class TeacherController : BaseController
     public async Task<IActionResult> GetTeachers(
         [FromQuery] PaginationAndFilterRequestDto<TeacherFilterRequestDto> paginationRequest)
     {
-        var paginationResult = await _teacherService.GetAllTeachersAsync(paginationRequest);
+        var paginationResult = await _teacherService.GetTeachersAsync(paginationRequest);
 
         var mappedResult = _mapper.Map<PaginationResponseDto<TeacherDto>>(paginationResult);
 
@@ -52,6 +52,10 @@ public class TeacherController : BaseController
     public async Task<IActionResult> CreateTeacher([FromBody] CreateTeacherDto teacherDto)
     {
         await ValidateAsync(_createTeacherValidator, teacherDto);
+
+        // TODO: create username and password
+        // TODO: create infrastructureUser
+        // TODO: set id from infrastructureUser
 
         var teacher = _mapper.Map<Domain.Entities.Teacher>(teacherDto);
 

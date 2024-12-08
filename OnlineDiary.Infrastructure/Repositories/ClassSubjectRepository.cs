@@ -38,13 +38,12 @@ namespace OnlineDiary.Infrastructure.Repositories
                 .FirstOrDefaultAsync(cs => cs.ClassSubjectId == id);
         }
 
-        public override async Task<IEnumerable<ClassSubject>> GetAllAsync()
+        public override async Task<IQueryable<ClassSubject>> GetAllAsync()
         {
-            return await _dbSet
+            return _dbSet
                 .Include(cs => cs.Subject)
                 .Include(cs => cs.Teacher)
-                .Include(cs => cs.Class)
-                .ToListAsync();
+                .Include(cs => cs.Class);
         }
 
         public override async Task<IEnumerable<ClassSubject>> FindAsync(Expression<Func<ClassSubject, bool>> predicate)

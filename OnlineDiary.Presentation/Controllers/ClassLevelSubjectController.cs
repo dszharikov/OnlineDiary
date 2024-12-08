@@ -2,7 +2,9 @@ using AutoMapper;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using OnlineDiary.Application.Filters.ClassLevelSubjects;
 using OnlineDiary.Application.Interfaces;
+using OnlineDiary.Application.Pagination;
 using OnlineDiary.Presentation.DTOs.ClassLevelSubjectDtos;
 
 namespace OnlineDiary.Presentation.Controllers;
@@ -18,7 +20,8 @@ public class ClassLevelSubjectController : BaseController
     private readonly IValidator<UpdateClassLevelSubjectDto> _updateClassLevelSubjectValidator;
 
     public ClassLevelSubjectController(
-        IClassLevelSubjectService classLevelSubjectService, IMapper mapper,
+        IClassLevelSubjectService classLevelSubjectService, 
+        IMapper mapper,
         IValidator<CreateClassLevelSubjectDto> createClassLevelSubjectValidator,
         IValidator<UpdateClassLevelSubjectDto> updateClassLevelSubjectValidator)
     {
@@ -29,11 +32,14 @@ public class ClassLevelSubjectController : BaseController
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetClassLevelSubjects()
+    public async Task<IActionResult> GetClassLevelSubjects(
+        [FromQuery] PaginationAndFilterRequestDto<ClassLevelSubjectFilterRequestDto> paginationAndFilterRequest)
     {
-        var classLevelSubjects = await _classLevelSubjectService.GetAllClassLevelSubjectsAsync();
+        var paginationResult = await _classLevelSubjectService.GetClassLevelSubjectsAsync(paginationAndFilterRequest);
 
-        return Ok(_mapper.Map<IEnumerable<ClassLevelSubjectDto>>(classLevelSubjects));
+        var mappedResult = _mapper.Map<PaginationResponseDto<ClassLevelSubjectDto>>(paginationResult);
+
+        return Ok(mappedResult);
     }
 
     [HttpGet("{classLevelSubjectId}")]

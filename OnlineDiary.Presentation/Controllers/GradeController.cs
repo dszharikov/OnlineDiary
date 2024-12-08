@@ -48,6 +48,15 @@ public class GradeController : BaseController
         return Ok(_mapper.Map<GradeDto>(grade));
     }
 
+    [HttpGet("classSubjects/{classSubjectId}/term/{termId}")]
+    [Authorize(Roles = "Director, Teacher, Student")]
+    public async Task<ActionResult<IEnumerable<GradeDto>>> GetGradesByClassSubjectAndTerm(Guid classSubjectId, Guid termId)
+    {
+        var grades = await _gradeService.GetGradesByClassSubjectAndTermAsync(classSubjectId, termId);
+
+        return Ok(_mapper.Map<IEnumerable<GradeDto>>(grades));
+    }
+
     [HttpPost]
     [Authorize(Roles = "Director, Teacher")]
     public async Task<IActionResult> CreateGrade(CreateGradeDto dto)

@@ -1,6 +1,7 @@
 using AutoMapper;
 using OnlineDiary.Application.Exceptions;
 using OnlineDiary.Application.Interfaces;
+using OnlineDiary.Application.Pagination;
 using OnlineDiary.Domain.Entities;
 using OnlineDiary.Domain.Interfaces;
 
@@ -10,13 +11,16 @@ public class TermService : ITermService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
+    private readonly IPaginationService _paginationService;
 
     public TermService(
         IUnitOfWork unitOfWork,
-        IMapper mapper)
+        IMapper mapper, 
+        IPaginationService paginationService)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
+        _paginationService = paginationService;
     }
 
     public async Task<Term> GetTermByIdAsync(Guid termId)
@@ -30,10 +34,11 @@ public class TermService : ITermService
         return term;
     }
 
-    public async Task<IEnumerable<Term>> GetAllTermsAsync()
+    public async Task<PaginationResponseDto<Term>> GetTermsAsync(PaginationRequestDto paginationRequest)
     {
         var terms = await _unitOfWork.Terms.GetAllAsync();
-        return terms;
+
+        return await _paginationService.PaginateAsync(terms, paginationRequest);
     }
 
     public async Task CreateTermAsync(Term term)

@@ -14,6 +14,7 @@ using OnlineDiary.Presentation.DTOs.TermDtos;
 using OnlineDiary.Presentation.DTOs.UserDtos;
 using OnlineDiary.Domain.Entities;
 using OnlineDiary.Application.Pagination;
+using OnlineDiary.Presentation.DTOs.ScheduleDtos;
 
 namespace OnlineDiary.Presentation.Mappings;
 
@@ -99,6 +100,17 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.LessonDate, opt => opt.MapFrom(src => src.Lesson.Date));
         CreateMap<CreateHomeworkDto, Homework>();
         CreateMap<UpdateHomeworkDto, Homework>();
+
+        // Маппинг для Schedule
+        CreateMap<Schedule, ScheduleDto>()
+            .ForMember(dest => dest.ClassId, opt => opt.MapFrom(src => src.ClassSubject.ClassId))
+            .ForMember(dest => dest.ClassName, opt => opt.MapFrom(src => src.ClassSubject.Class.Name))
+            .ForMember(dest => dest.TeacherId, opt => opt.MapFrom(src => src.ClassSubject.TeacherId))
+            .ForMember(dest => dest.TeacherSurname, opt => opt.MapFrom(src => src.ClassSubject.Teacher.LastName))
+            .ForMember(dest => dest.SubjectId, opt => opt.MapFrom(src => src.ClassSubject.SubjectId))
+            .ForMember(dest => dest.SubjectName, opt => opt.MapFrom(src => src.ClassSubject.Subject.Name));
+        CreateMap<CreateScheduleDto, Schedule>();
+        CreateMap<UpdateScheduleDto, Schedule>();
 
         CreateMap(typeof(PaginationResponseDto<>), typeof(PaginationResponseDto<>))
             .ConvertUsing(typeof(PaginationResponseConverter<,>));

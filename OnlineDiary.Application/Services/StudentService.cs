@@ -1,6 +1,9 @@
 using AutoMapper;
 using OnlineDiary.Application.Exceptions;
+using OnlineDiary.Application.Filters;
+using OnlineDiary.Application.Filters.Students;
 using OnlineDiary.Application.Interfaces;
+using OnlineDiary.Application.Pagination;
 using OnlineDiary.Domain.Entities;
 using OnlineDiary.Domain.Interfaces;
 
@@ -10,13 +13,19 @@ public class StudentService : IStudentService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
+    private readonly IFilter<Student> _studentFilter;
+    private readonly IPaginationService _paginationService;
 
     public StudentService(
         IUnitOfWork unitOfWork,
-        IMapper mapper)
+        IMapper mapper,
+        IFilter<Student> studentFilter,
+        IPaginationService paginationService)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
+        _studentFilter = studentFilter;
+        _paginationService = paginationService;
     }
 
     public async Task<Student> GetStudentByIdAsync(Guid studentId)
@@ -37,17 +46,19 @@ public class StudentService : IStudentService
         return students;
     }
 
-    public async Task<IEnumerable<Student>> GetAllStudentsAsync()
+    public async Task<PaginationResponseDto<Student>> GetStudentsAsync(
+        PaginationAndFilterRequestDto<StudentFilterRequestDto> paginationAndFilterRequest)
     {
-        var students = await _unitOfWork.Students.GetAllAsync();
-        return students;
+        var query = await _unitOfWork.Students.GetAllAsync();
+
+        query = _studentFilter.Apply(query, paginationAndFilterRequest.Filter);
+
+        var paginatedStudents = await _paginationService.PaginateAsync(query, paginationAndFilterRequest.Pagination);
+        return paginatedStudents;
     }
 
     public async Task CreateStudentAsync(Student dto)
     {
-        // TODO: create username and password
-        // TODO: set id from infrastructureUser
-
         var student = _mapper.Map<Student>(dto);
         await _unitOfWork.Students.AddAsync(student);
 

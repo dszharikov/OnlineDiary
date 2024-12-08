@@ -1,5 +1,9 @@
 using Microsoft.Extensions.DependencyInjection;
 using OnlineDiary.Application.Filters;
+using OnlineDiary.Application.Filters.ClassLevelSubjects;
+using OnlineDiary.Application.Filters.ClassSubjects;
+using OnlineDiary.Application.Filters.Students;
+using OnlineDiary.Application.Filters.Subjects;
 using OnlineDiary.Application.Filters.Teachers;
 using OnlineDiary.Application.Interfaces;
 using OnlineDiary.Application.Services;
@@ -30,6 +34,10 @@ public static class ServiceCollectionExtensions
 
         // filters
         services.AddScoped<IFilter<Teacher>, TeacherFilter>();
+        services.AddScoped<IFilter<Subject>, SubjectFilter>();
+        services.AddScoped<IFilter<Student>, StudentFilter>();
+        services.AddScoped<IFilter<ClassLevelSubject>, ClassLevelSubjectFilter>();
+        services.AddScoped<IFilter<ClassSubject>, ClassSubjectFilter>();
 
 
         return services;

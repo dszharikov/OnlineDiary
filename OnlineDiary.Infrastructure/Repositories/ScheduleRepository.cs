@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
 using OnlineDiary.Domain.Entities;
 using OnlineDiary.Domain.Interfaces.Repositories;
 using OnlineDiary.Infrastructure.Data;
@@ -9,9 +10,10 @@ namespace OnlineDiary.Infrastructure.Repositories
     {
         public ScheduleRepository(SchoolDbContext context) : base(context) { }
 
-        public async Task<Schedule> GetByTermClassSubjectDayOfWeekTimeAsync(Guid termId, Guid classSubjectId, DayOfWeek dayOfWeek, TimeSpan time)
+        public async Task<Schedule> GetByTermClassSubjectDayOfWeekTimeAsync(Guid termId, Guid classSubjectId, DayOfWeek dayOfWeek, TimeOnly time)
         {
-            return await _dbSet
+            var allQuery = await GetAllAsync();
+            return await allQuery
                 .FirstOrDefaultAsync(s => 
                     s.TermId == termId 
                     && s.ClassSubjectId == classSubjectId 
@@ -21,37 +23,53 @@ namespace OnlineDiary.Infrastructure.Repositories
 
         public async Task<IEnumerable<Schedule>> GetByClassIdAsync(Guid classId)
         {
-            return await _dbSet
+            var allQuery = await GetAllAsync();
+            return await allQuery
                 .Where(s => s.ClassSubject.ClassId == classId)
                 .ToListAsync();
         }
 
         public async Task<IEnumerable<Schedule>> GetByDayOfWeekAsync(DayOfWeek dayOfWeek)
         {
-            return await _dbSet
+            var allQuery = await GetAllAsync();
+            return await allQuery
                 .Where(s => s.DayOfWeek == dayOfWeek)
                 .ToListAsync();
         }
 
         public async Task<IEnumerable<Schedule>> GetByTeacherIdAsync(Guid teacherId)
         {
-            return await _dbSet
+            var allQuery = await GetAllAsync();
+            return await allQuery
                 .Where(s => s.ClassSubject.TeacherId == teacherId)
                 .ToListAsync();
         }
 
         public async Task<IEnumerable<Schedule>> GetByTermClassAsync(Guid termId, Guid classId)
         {
-            return await _dbSet
+            var allQuery = await GetAllAsync();
+            return await allQuery
                 .Where(s => s.ClassSubject.ClassId == classId && s.TermId == termId)
                 .ToListAsync();
         }
 
         public async Task<IEnumerable<Schedule>> GetByTermTeacherAsync(Guid termId, Guid teacherId)
         {
-            return await _dbSet
+            var allQuery = await GetAllAsync();
+            return await allQuery
                 .Where(s => s.ClassSubject.TeacherId == teacherId && s.TermId == termId)
                 .ToListAsync();
+        }
+
+        public override async Task<IQueryable<Schedule>> GetAllAsync()
+        {
+            return _dbSet
+                .Include(s => s.ClassSubject)
+                    .ThenInclude(cs => cs.Class)
+                .Include(s => s.ClassSubject)
+                    .ThenInclude(cs => cs.Subject)
+                .Include(s => s.ClassSubject)
+                    .ThenInclude(cs => cs.Teacher);
         }
     }
 }

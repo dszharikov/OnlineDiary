@@ -1,6 +1,9 @@
 using AutoMapper;
 using OnlineDiary.Application.Exceptions;
+using OnlineDiary.Application.Filters;
+using OnlineDiary.Application.Filters.ClassLevelSubjects;
 using OnlineDiary.Application.Interfaces;
+using OnlineDiary.Application.Pagination;
 using OnlineDiary.Domain.Entities;
 using OnlineDiary.Domain.Interfaces;
 
@@ -10,13 +13,19 @@ public class ClassLevelSubjectService : IClassLevelSubjectService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
+    private readonly IPaginationService _paginationService;
+    private readonly IFilter<ClassLevelSubject> _classLevelSubjectFilter;
 
     public ClassLevelSubjectService(
         IUnitOfWork unitOfWork,
-        IMapper mapper)
+        IMapper mapper,
+        IPaginationService paginationService,
+        IFilter<ClassLevelSubject> classLevelSubjectFilter)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
+        _paginationService = paginationService;
+        _classLevelSubjectFilter = classLevelSubjectFilter;
     }
 
     public async Task<ClassLevelSubject> GetClassLevelSubjectByIdAsync(Guid classLevelSubjectId)
@@ -30,10 +39,15 @@ public class ClassLevelSubjectService : IClassLevelSubjectService
         return classLevelSubject;
     }
 
-    public async Task<IEnumerable<ClassLevelSubject>> GetAllClassLevelSubjectsAsync()
+    public async Task<PaginationResponseDto<ClassLevelSubject>> GetClassLevelSubjectsAsync(
+        PaginationAndFilterRequestDto<ClassLevelSubjectFilterRequestDto> paginationAndFilterRequestDto)
     {
-        var classLevelSubjects = await _unitOfWork.ClassLevelSubjects.GetAllAsync();
-        return classLevelSubjects;
+        var query = await _unitOfWork.ClassLevelSubjects.GetAllAsync();
+
+        query = _classLevelSubjectFilter.Apply(query, paginationAndFilterRequestDto.Filter);
+
+        var paginatedClassLevelSubjects = await _paginationService.PaginateAsync(query, paginationAndFilterRequestDto.Pagination);
+        return paginatedClassLevelSubjects;
     }
 
     public async Task<IEnumerable<ClassLevelSubject>> GetClassLevelSubjectsByClassLevelAsync(int classLevel)

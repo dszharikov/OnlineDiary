@@ -87,7 +87,7 @@ public class HomeworkController : BaseController
 
         await _homeworkService.UpdateHomeworkAsync(homeworkId, homework);
 
-        return Ok();
+        return NoContent();
     }
 
     [Authorize(Roles = "Teacher")]

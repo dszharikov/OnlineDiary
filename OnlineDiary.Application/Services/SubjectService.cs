@@ -1,6 +1,9 @@
 using AutoMapper;
 using OnlineDiary.Application.Exceptions;
+using OnlineDiary.Application.Filters;
+using OnlineDiary.Application.Filters.Subjects;
 using OnlineDiary.Application.Interfaces;
+using OnlineDiary.Application.Pagination;
 using OnlineDiary.Domain.Entities;
 using OnlineDiary.Domain.Interfaces;
 
@@ -10,13 +13,19 @@ public class SubjectService : ISubjectService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
+    private readonly IFilter<Subject> _subjectFilter;
+    private readonly IPaginationService _paginationService;
 
     public SubjectService(
         IUnitOfWork unitOfWork,
-        IMapper mapper)
+        IMapper mapper,
+        IFilter<Subject> subjectFilter,
+        IPaginationService paginationService)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
+        _subjectFilter = subjectFilter;
+        _paginationService = paginationService;
     }
 
     public async Task<Subject> GetSubjectByIdAsync(Guid subjectId)
@@ -34,6 +43,17 @@ public class SubjectService : ISubjectService
     {
         var subjects = await _unitOfWork.Subjects.GetAllAsync();
         return subjects;
+    }
+
+    public async Task<PaginationResponseDto<Subject>> GetSubjectsAsync(
+        PaginationAndFilterRequestDto<SubjectFilterRequestDto> paginationAndFilterRequest)
+    {
+        var query = await _unitOfWork.Subjects.GetAllAsync();
+
+        query = _subjectFilter.Apply(query, paginationAndFilterRequest.Filter);
+
+        var paginatedSubjects = await _paginationService.PaginateAsync(query, paginationAndFilterRequest.Pagination);
+        return paginatedSubjects;
     }
 
     public async Task CreateSubjectAsync(Subject subject)
@@ -85,4 +105,6 @@ public class SubjectService : ISubjectService
             throw new DuplicateException($"Предмет с именем {name} уже существует.");
         }
     }
+
+    
 }

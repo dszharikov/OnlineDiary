@@ -11,7 +11,7 @@ public class Schedule
 
     public DayOfWeek DayOfWeek { get; set; }
 
-    public TimeSpan Time { get; set; }
+    public TimeOnly Time { get; set; }
 
     public string Room { get; set; }
     public Guid TermId { get; set; } // Внешний ключ к Term

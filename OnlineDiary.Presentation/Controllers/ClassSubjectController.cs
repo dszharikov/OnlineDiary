@@ -2,7 +2,9 @@ using AutoMapper;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using OnlineDiary.Application.Filters.ClassSubjects;
 using OnlineDiary.Application.Interfaces;
+using OnlineDiary.Application.Pagination;
 using OnlineDiary.Presentation.DTOs.ClassSubjectDtos;
 
 namespace OnlineDiary.Presentation.Controllers;
@@ -30,9 +32,21 @@ public class ClassSubjectController : BaseController
 
     [HttpGet]
     [Authorize(Roles = "Director")]
-    public async Task<IActionResult> GetClassSubjects()
+    public async Task<IActionResult> GetClassSubjects(
+        [FromQuery] PaginationAndFilterRequestDto<ClassSubjectFilterRequestDto> paginationAndFilterRequest)
     {
-        var classSubjects = await _classSubjectService.GetAllClassSubjectsAsync();
+        var classSubjects = await _classSubjectService.GetClassSubjectsAsync(paginationAndFilterRequest);
+
+        var mappedResult = _mapper.Map<PaginationResponseDto<ClassSubjectDto>>(classSubjects);
+
+        return Ok(mappedResult);
+    }
+
+    [HttpGet("class/{classId}")]
+    [Authorize(Roles = "Director")]
+    public async Task<IActionResult> GetClassSubjectsByClassId(Guid classId)
+    {
+        var classSubjects = await _classSubjectService.GetClassSubjectsByClassIdAsync(classId);
 
         return Ok(_mapper.Map<IEnumerable<ClassSubjectDto>>(classSubjects));
     }

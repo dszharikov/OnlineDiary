@@ -17,11 +17,10 @@ namespace OnlineDiary.Infrastructure.Repositories
                 .ToListAsync();
         }
 
-        public override async Task<IEnumerable<Student>> GetAllAsync()
+        public override async Task<IQueryable<Student>> GetAllAsync()
         {
-            return await _dbSet
-                .Include(s => s.Class)
-                .ToListAsync();
+            return _dbSet
+                .Include(s => s.Class);
         }
 
         public override async Task<Student> GetByIdAsync(Guid id)

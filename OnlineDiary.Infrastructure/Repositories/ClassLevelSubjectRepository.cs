@@ -31,11 +31,10 @@ namespace OnlineDiary.Infrastructure.Repositories
                 .FirstOrDefaultAsync(cls => cls.ClassLevelSubjectId == id);
         }
 
-        public override async Task<IEnumerable<ClassLevelSubject>> GetAllAsync()
+        public override async Task<IQueryable<ClassLevelSubject>> GetAllAsync()
         {
-            return await _dbSet
-                .Include(cls => cls.Subject)
-                .ToListAsync();
+            return _dbSet
+                .Include(cls => cls.Subject);
         }
     }
 }

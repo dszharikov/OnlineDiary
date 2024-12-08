@@ -32,11 +32,20 @@ public class ClassController : BaseController
     [Authorize(Roles = "Director")]
     public async Task<IActionResult> GetClasses([FromQuery] PaginationRequestDto paginationRequest)
     {
-        var paginationResult = await _classService.GetClasses(paginationRequest);
+        var paginationResult = await _classService.GetClassesAsync(paginationRequest);
 
         var mappedResult = _mapper.Map<PaginationResponseDto<ClassDto>>(paginationResult);
 
         return Ok(mappedResult);
+    }
+
+    [Authorize(Roles = "Director")]
+    [HttpGet("/all")]
+    public async Task<IActionResult> GetAllClasses()
+    {
+        var classes = await _classService.GetAllClassesAsync();
+
+        return Ok(_mapper.Map<IEnumerable<ClassDto>>(classes));
     }
 
     // TODO: get classes by teacher id

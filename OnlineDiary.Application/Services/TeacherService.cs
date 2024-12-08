@@ -39,7 +39,7 @@ public class TeacherService : ITeacherService
         return teacher;
     }
 
-    public async Task<PaginationResponseDto<Teacher>> GetAllTeachersAsync(
+    public async Task<PaginationResponseDto<Teacher>> GetTeachersAsync(
         PaginationAndFilterRequestDto<TeacherFilterRequestDto> paginationRequestDto)
     {
         var query = await _unitOfWork.Teachers.GetAllAsync();
@@ -52,10 +52,6 @@ public class TeacherService : ITeacherService
 
     public async Task CreateTeacherAsync(Teacher teacher)
     {
-        // TODO: create username and password
-        // TODO: create infrastructureUser
-        // TODO: set id from infrastructureUser
-
         await _unitOfWork.Teachers.AddAsync(teacher);
 
         await _unitOfWork.SaveChangesAsync();

@@ -7,5 +7,11 @@ namespace OnlineDiary.Infrastructure.Repositories
     public class SubjectRepository : BaseRepository<Subject>, ISubjectRepository
     {
         public SubjectRepository(SchoolDbContext context) : base(context) { }
+
+        public override async Task<IQueryable<Subject>> GetAllAsync()
+        {
+            return _dbSet
+                .OrderBy(s => s.Name);
+        }
     }
 }
