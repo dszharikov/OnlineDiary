@@ -10,11 +10,13 @@ public class ScheduleService : IScheduleService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
+    private readonly ILessonService _lessonService;
 
-    public ScheduleService(IUnitOfWork unitOfWork, IMapper mapper)
+    public ScheduleService(IUnitOfWork unitOfWork, IMapper mapper, ILessonService lessonService)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
+        _lessonService = lessonService;
     }
 
     public async Task<Schedule> GetScheduleByIdAsync(Guid scheduleId)
@@ -56,8 +58,11 @@ public class ScheduleService : IScheduleService
             throw new DuplicateException("Расписание уже существует.");
         }
 
+
         await _unitOfWork.Schedules.AddAsync(schedule);
         await _unitOfWork.SaveChangesAsync();
+        
+        await _lessonService.CreateLessonsByScheduleAsync(schedule);
     }
 
     public async Task UpdateScheduleAsync(Guid scheduleId, Schedule schedule)

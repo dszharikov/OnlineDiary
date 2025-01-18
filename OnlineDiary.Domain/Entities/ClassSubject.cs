@@ -21,6 +21,7 @@ public class ClassSubject
     public Teacher Teacher { get; set; }
 
     public ICollection<Schedule> Schedules { get; set; } = new List<Schedule>();
+    public ICollection<QuarterlyGrade> QuarterlyGrades { get; set; } = new List<QuarterlyGrade>();
     public ICollection<Lesson> Lessons { get; set; } = new List<Lesson>();
     public ICollection<QuarterlySubgrade> QuarterlySubgrades { get; set; } = new List<QuarterlySubgrade>();
 }

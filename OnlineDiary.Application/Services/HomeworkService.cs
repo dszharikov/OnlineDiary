@@ -30,12 +30,6 @@ public class HomeworkService : IHomeworkService
         return homework;
     }
 
-    public async Task<IEnumerable<Homework>> GetAllHomeworksAsync()
-    {
-        var homeworks = await _unitOfWork.Homeworks.GetAllAsync();
-        return homeworks;
-    }
-
     public async Task<IEnumerable<Homework>> GetActualHomeworksByStudentIdAsync(Guid studentId)
     {
         var homeworks = await _unitOfWork.Homeworks.GetActualHomeworkByStudentIdAsync(studentId);

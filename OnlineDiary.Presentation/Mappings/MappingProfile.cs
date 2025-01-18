@@ -15,6 +15,8 @@ using OnlineDiary.Presentation.DTOs.UserDtos;
 using OnlineDiary.Domain.Entities;
 using OnlineDiary.Application.Pagination;
 using OnlineDiary.Presentation.DTOs.ScheduleDtos;
+using OnlineDiary.Presentation.DTOs.LessonDtos;
+using OnlineDiary.Presentation.DTOs.QuarterlyGradeDtos;
 
 namespace OnlineDiary.Presentation.Mappings;
 
@@ -111,6 +113,27 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.SubjectName, opt => opt.MapFrom(src => src.ClassSubject.Subject.Name));
         CreateMap<CreateScheduleDto, Schedule>();
         CreateMap<UpdateScheduleDto, Schedule>();
+
+        // Маппинг для Lesson
+        CreateMap<Lesson, LessonDto>()
+            .ForMember(dest => dest.ClassId, opt => opt.MapFrom(src => src.Schedule.ClassSubject.ClassId))
+            .ForMember(dest => dest.ClassName, opt => opt.MapFrom(src => src.Schedule.ClassSubject.Class.Name))
+            .ForMember(dest => dest.TeacherId, opt => opt.MapFrom(src => src.Schedule.ClassSubject.TeacherId))
+            .ForMember(dest => dest.TeacherSurname, opt => opt.MapFrom(src => src.Schedule.ClassSubject.Teacher.LastName))
+            .ForMember(dest => dest.SubjectId, opt => opt.MapFrom(src => src.Schedule.ClassSubject.SubjectId))
+            .ForMember(dest => dest.SubjectName, opt => opt.MapFrom(src => src.Schedule.ClassSubject.Subject.Name));
+        CreateMap<UpdateLessonDto, Lesson>();
+
+        // Маппинг для QuarterlyGrades
+        CreateMap<QuarterlyGrade, QuarterlyGradeDto>()
+            .ForMember(dest => dest.ClassSubjectId, opt => opt.MapFrom(src => src.ClassSubjectId))
+            .ForMember(dest => dest.Comment, opt => opt.MapFrom(src => src.Comment))
+            .ForMember(dest => dest.StudentId, opt => opt.MapFrom(src => src.StudentId))
+            .ForMember(dest => dest.TermId, opt => opt.MapFrom(src => src.TermId))
+            .ForMember(dest => dest.OverallGrade, opt => opt.MapFrom(src => src.OverallGrade))
+            .ForMember(dest => dest.QuarterlyGradeId, opt => opt.MapFrom(src => src.QuarterlyGradeId));
+        CreateMap<CreateQuarterlyGradeDto, QuarterlyGrade>();
+        CreateMap<UpdateQuarterlyGradeDto, QuarterlyGrade>();
 
         CreateMap(typeof(PaginationResponseDto<>), typeof(PaginationResponseDto<>))
             .ConvertUsing(typeof(PaginationResponseConverter<,>));

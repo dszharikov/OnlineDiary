@@ -32,7 +32,7 @@ public class SubjectSubcategoryService : ISubjectSubcategoryService
 
     public async Task<IEnumerable<SubjectSubcategory>> GetAllSubcategoriesAsync()
     {
-        var subcategories = await _unitOfWork.SubjectSubcategories.GetAllAsync();
+        var subcategories = _unitOfWork.SubjectSubcategories.GetAllAsync();
         return subcategories;
     }
 

@@ -17,6 +17,22 @@ public class QuarterlyGradeService : IQuarterlyGradeService
         _mapper = mapper;
     }
 
+    public async Task<IEnumerable<QuarterlyGrade>> GetQuarterlyGradesByStudentIdTermIdAsync(Guid studentId, Guid termId)
+    {
+        var quarterlyGrades = await _unitOfWork.QuarterlyGrades
+            .GetByStudentIdTermIdAsync(studentId, termId);
+
+        return quarterlyGrades;
+    }
+
+    public async Task<IEnumerable<QuarterlyGrade>> GetQuarterlyGradesByClassSubjectAndTermAsync(Guid classSubjectId, Guid termId)
+    {
+        var quarterlyGrades = await _unitOfWork.QuarterlyGrades
+            .GetByClassSubjectAndTermAsync(classSubjectId, termId);
+
+        return quarterlyGrades;
+    }
+
     public async Task<QuarterlyGrade> GetQuarterlyGradeByIdAsync(Guid quarterlyGradeId)
     {
         var quarterlyGrade = await _unitOfWork.QuarterlyGrades.GetByIdAsync(quarterlyGradeId);
@@ -29,50 +45,15 @@ public class QuarterlyGradeService : IQuarterlyGradeService
         return quarterlyGrade;
     }
 
-    public async Task<QuarterlyGrade> GetQuarterlyGradeByStudentSubjectTermAsync(Guid studentId, Guid subjectId, Guid termId)
-    {
-        var quarterlyGrade = await _unitOfWork.QuarterlyGrades.GetByStudentSubjectTermAsync(studentId, subjectId, termId);
-
-        if (quarterlyGrade == null)
-        {
-            throw new NotFoundException($"Оценка не найдена.");
-        }
-
-        return quarterlyGrade;
-    }
-
-    public async Task<IEnumerable<QuarterlyGrade>> GetQuarterlyGradesByStudentIdAsync(Guid studentId)
-    {
-        var quarterlyGrades = await _unitOfWork.QuarterlyGrades.GetByStudentAsync(studentId);
-
-        return quarterlyGrades;
-    }
     public async Task CreateQuarterlyGradeAsync(QuarterlyGrade quarterlyGrade)
     {
-        var quarterlyGradeEntity = await _unitOfWork.QuarterlyGrades
-            .GetByStudentSubjectTermAsync(quarterlyGrade.StudentId, quarterlyGrade.SubjectId, quarterlyGrade.TermId);
-
-        if (quarterlyGradeEntity != null)
-        {
-            throw new DuplicateException("Оценка уже существует.");
-        }
-
         await _unitOfWork.QuarterlyGrades.AddAsync(quarterlyGrade);
         await _unitOfWork.SaveChangesAsync();
     }
 
-    public async Task UpdateQuarterlyGradeAsync(Guid quarterlyGradeId, QuarterlyGrade updatedQuarterlyGrade)
+    public async Task UpdateQuarterlyGradeAsync(QuarterlyGrade updatedQuarterlyGrade)
     {
-        var quarterlyGrade = await _unitOfWork.QuarterlyGrades.GetByIdAsync(quarterlyGradeId);
-
-        if (quarterlyGrade == null)
-        {
-            throw new NotFoundException($"Оценка с ID {quarterlyGradeId} не найдена.");
-        }
-
-        _mapper.Map(updatedQuarterlyGrade, quarterlyGrade);
-
-        _unitOfWork.QuarterlyGrades.Update(quarterlyGrade);
+        _unitOfWork.QuarterlyGrades.Update(updatedQuarterlyGrade);
         await _unitOfWork.SaveChangesAsync();
     }
     public async Task DeleteQuarterlyGradeAsync(Guid quarterlyGradeId)
@@ -87,4 +68,5 @@ public class QuarterlyGradeService : IQuarterlyGradeService
         _unitOfWork.QuarterlyGrades.Remove(quarterlyGrade);
         await _unitOfWork.SaveChangesAsync();
     }
+
 }

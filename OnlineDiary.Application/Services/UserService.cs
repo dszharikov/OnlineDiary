@@ -32,7 +32,7 @@ public class UserService : IUserService
 
     public async Task<IEnumerable<User>> GetAllUsersAsync()
     {
-        var users = await _unitOfWork.Users.GetAllAsync();
+        var users = _unitOfWork.Users.GetAllAsync();
         return users;
     }
 

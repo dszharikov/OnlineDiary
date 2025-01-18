@@ -32,7 +32,7 @@ public class SchoolService : ISchoolService
 
     public async Task<IEnumerable<School>> GetAllSchoolsAsync()
     {
-        var schools = await _unitOfWork.Schools.GetAllAsync();
+        var schools = _unitOfWork.Schools.GetAllAsync().ToList();
 
         return schools;
     }

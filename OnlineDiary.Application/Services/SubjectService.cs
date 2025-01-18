@@ -41,14 +41,14 @@ public class SubjectService : ISubjectService
 
     public async Task<IEnumerable<Subject>> GetAllSubjectsAsync()
     {
-        var subjects = await _unitOfWork.Subjects.GetAllAsync();
+        var subjects = _unitOfWork.Subjects.GetAllAsync();
         return subjects;
     }
 
     public async Task<PaginationResponseDto<Subject>> GetSubjectsAsync(
         PaginationAndFilterRequestDto<SubjectFilterRequestDto> paginationAndFilterRequest)
     {
-        var query = await _unitOfWork.Subjects.GetAllAsync();
+        var query = _unitOfWork.Subjects.GetAllAsync();
 
         query = _subjectFilter.Apply(query, paginationAndFilterRequest.Filter);
 

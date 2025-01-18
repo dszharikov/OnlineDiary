@@ -30,13 +30,6 @@ public class GradeService : IGradeService
         return grade;
     }
 
-    public async Task<IEnumerable<Grade>> GetAllGradesAsync()
-    {
-        var grades = await _unitOfWork.Grades.GetAllAsync();
-
-        return grades;
-    }
-
     public async Task<IEnumerable<Grade>> GetGradesForStudentByTermIdAsync(Guid studentId, Guid termId)
     {
         var grades = await _unitOfWork.Grades.GetGradesForStudentByTermAsync(studentId, termId);
@@ -53,22 +46,13 @@ public class GradeService : IGradeService
 
     public async Task CreateGradeAsync(Grade grade)
     {
-        await EnsureGradeDoesNotExistAsync(grade.StudentId, grade.LessonId);
-
         await _unitOfWork.Grades.AddAsync(grade);
         await _unitOfWork.SaveChangesAsync();
     }
 
-    public async Task UpdateGradeAsync(Guid gradeId, Grade updatedGrade)
+    public async Task UpdateGradeAsync(Grade updatedGrade)
     {
-        var grade = await _unitOfWork.Grades.GetByIdAsync(gradeId);
-        if (grade == null)
-        {
-            throw new NotFoundException($"Оценка с ID {gradeId} не найдена.");
-        }
-
-        _mapper.Map(updatedGrade, grade);
-        _unitOfWork.Grades.Update(grade);
+        _unitOfWork.Grades.Update(updatedGrade);
         await _unitOfWork.SaveChangesAsync();
     }
 
@@ -82,16 +66,5 @@ public class GradeService : IGradeService
 
         _unitOfWork.Grades.Remove(grade);
         await _unitOfWork.SaveChangesAsync();
-    }
-
-    // Метод проверки на наличие дубликата ClassLevelSubject
-    private async Task EnsureGradeDoesNotExistAsync(Guid studentId, Guid lessonId)
-    {
-        var grades = await _unitOfWork.Grades.FindAsync(g => g.StudentId == studentId && g.LessonId == lessonId);
-
-        if (grades.Any())
-        {
-            throw new DuplicateException("Такая запись Grade уже существует.");
-        }
     }
 }

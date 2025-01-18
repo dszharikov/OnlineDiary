@@ -5,17 +5,11 @@ namespace OnlineDiary.Application.Interfaces;
 public interface ILessonService
 {
     Task<Lesson> GetLessonByIdAsync(Guid lessonId);
+    Task<IEnumerable<Lesson>> GetLessonsByTeacherForWeekAsync(Guid teacherId, DateTime date);
+    Task<IEnumerable<Lesson>> GetLessonsByClassForWeekAsync(Guid classId, DateTime date);
+    Task<IEnumerable<Lesson>> GetLessonsByClassSubjectAndTermAsync(Guid classId, Guid subjectId, Guid termId);
 
-    Task<IEnumerable<Lesson>> GetLessonsByDateAsync(DateTime date);
-
-    Task<IEnumerable<Lesson>> GetLessonsByDateRangeAndTeacherIdAsync(DateTime startDate, DateTime endDate, Guid teacherId);
-
-    Task<IEnumerable<Lesson>> GetLessonsByDateRangeAndStudentIdAsync(DateTime startDate, DateTime endDate, Guid classId);
-
-    Task<IEnumerable<Lesson>> GetLessonsByClassSubjectIdAndTermIdAsync(Guid classSubjectId, Guid termId);
-
-    Task CreateLessonAsync(Lesson lesson);
-
+    Task CreateLessonsByScheduleAsync(Schedule schedule);
     Task UpdateLessonAsync(Guid lessonId, Lesson lesson);
 
     Task DeleteLessonAsync(Guid lessonId);

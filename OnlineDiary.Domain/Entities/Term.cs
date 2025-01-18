@@ -9,9 +9,9 @@ public class Term
 
     public string Name { get; set; } // Например, "Первый семестр"
 
-    public DateTime StartDate { get; set; }
+    public DateOnly StartDate { get; set; }
 
-    public DateTime EndDate { get; set; }
+    public DateOnly EndDate { get; set; }
 
     // Навигационные свойства
     public ICollection<QuarterlyGrade> QuarterlyGrades { get; set; } = new List<QuarterlyGrade>();

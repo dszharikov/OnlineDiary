@@ -2,7 +2,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authorization;
 using OnlineDiary.Infrastructure.Authorization.Requirements.Grade;
 using OnlineDiary.Infrastructure.Services.Authorization;
-using OnlineDiary.Infrastructure.Authorization.Handlers;
+using OnlineDiary.Infrastructure.Authorization.Handlers.Grades;
+using OnlineDiary.Infrastructure.Authorization.Handlers.QuarterlyGrades;
 
 namespace OnlineDiary.Infrastructure.Extensions
 {

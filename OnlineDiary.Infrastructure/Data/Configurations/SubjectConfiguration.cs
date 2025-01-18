@@ -31,11 +31,6 @@ public class SubjectConfiguration : IEntityTypeConfiguration<Subject>
             .HasForeignKey(cs => cs.SubjectId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasMany(s => s.QuarterlyGrades)
-            .WithOne(qg => qg.Subject)
-            .HasForeignKey(qg => qg.SubjectId)
-            .OnDelete(DeleteBehavior.Cascade);
-
         // Уникальный индекс на поле Name
         builder.HasIndex(s => s.Name)
             .IsUnique(); 

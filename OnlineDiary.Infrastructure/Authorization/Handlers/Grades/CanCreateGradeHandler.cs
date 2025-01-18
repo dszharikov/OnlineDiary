@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Authorization;
 using OnlineDiary.Domain.Entities;
 using OnlineDiary.Domain.Interfaces;
-using OnlineDiary.Infrastructure.Authorization.Requirements.Grade;
+using OnlineDiary.Infrastructure.Authorization.Requirements.Grades;
 using System.Security.Claims;
 
-namespace OnlineDiary.Infrastructure.Authorization.Handlers;
+namespace OnlineDiary.Infrastructure.Authorization.Handlers.Grades;
 
 public class CanCreateGradeHandler : AuthorizationHandler<CanCreateGradeRequirement, Grade>
 {

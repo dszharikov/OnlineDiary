@@ -6,7 +6,7 @@ public interface IRepository<TEntity> where TEntity : class
 {
     Task<TEntity> GetByIdAsync(Guid id);
 
-    Task<IQueryable<TEntity>> GetAllAsync();
+    IQueryable<TEntity> GetAllAsync();
 
     Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate);
 

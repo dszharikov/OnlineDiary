@@ -29,63 +29,105 @@ public class LessonService : ILessonService
         return lesson;
     }
 
-    public async Task<IEnumerable<Lesson>> GetLessonsByClassSubjectIdAndTermIdAsync(Guid classSubjectId, Guid termId)
+    public async Task<IEnumerable<Lesson>> GetLessonsByTeacherForWeekAsync(Guid teacherId, DateTime date)
     {
-        var lessons = await _unitOfWork.Lessons.GetByClassSubjectIdAndTermIdAsync(classSubjectId, termId);
+        var lessons = await _unitOfWork.Lessons.GetByTeacherForWeekAsync(teacherId, date);
+
+        return lessons;
+    }
+    public async Task<IEnumerable<Lesson>> GetLessonsByClassForWeekAsync(Guid classId, DateTime date)
+    {
+        var lessons = await _unitOfWork.Lessons.GetByClassForWeekAsync(classId, date);
 
         return lessons;
     }
 
-    public async Task<IEnumerable<Lesson>> GetLessonsByDateAsync(DateTime date)
+    public async Task<IEnumerable<Lesson>> GetLessonsByClassSubjectAndTermAsync(Guid classId, Guid subjectId, Guid termId)
     {
-        var lessons = await _unitOfWork.Lessons.GetByDateAsync(date);
+        var lessons = await _unitOfWork.Lessons.GetByClassSubjectAndTermAsync(classId, subjectId, termId);
 
         return lessons;
     }
 
-    public async Task<IEnumerable<Lesson>> GetLessonsByDateRangeAndStudentIdAsync(DateTime startDate, DateTime endDate, Guid classId)
+    public async Task CreateLessonsByScheduleAsync(Schedule schedule)
     {
-        var lessons = await _unitOfWork.Lessons.GetByDateRangeAndStudentIdAsync(startDate, endDate, classId);
-
-        return lessons;
-    }
-
-    public async Task<IEnumerable<Lesson>> GetLessonsByDateRangeAndTeacherIdAsync(DateTime startDate, DateTime endDate, Guid teacherId)
-    {
-        var lessons = await _unitOfWork.Lessons.GetByDateRangeAndTeacherIdAsync(startDate, endDate, teacherId);
-
-        return lessons;
-    }
-
-    public async Task CreateLessonAsync(Lesson lesson)
-    {
-        var lessonEntity = _unitOfWork.Lessons.GetByScheduleAndDateAsync(lesson.ScheduleId, lesson.Date);
-
-        if (lessonEntity != null)
+        if (schedule == null)
         {
-            throw new DuplicateException("Запись Lesson с таким расписанием и датой уже существует.");
+            throw new NotFoundException($"Расписание не найдено.");
         }
 
-        await _unitOfWork.Lessons.AddAsync(lesson);
+        var term = await _unitOfWork.Terms.GetByIdAsync(schedule.TermId);
+
+        DateTime startDate;
+        // choose if the term has already started. Set time from schedule
+        if (term.StartDate.ToDateTime(schedule.Time) > DateTime.Now)
+        {
+            startDate = term.StartDate.ToDateTime(schedule.Time);
+        }
+        else
+        {
+            startDate = new DateTime(DateOnly.FromDateTime(DateTime.Now), schedule.Time);
+        }
+        // set first lesson date from today or from the begging of the term
+        startDate.AddDays(((int)schedule.DayOfWeek - (int)startDate.DayOfWeek + 7) % 7);
+
+        var endDate = term.EndDate.ToDateTime(TimeOnly.MaxValue);
+
+        var lessons = new List<Lesson>();
+
+        for (var date = startDate; date <= endDate; date = date.AddDays(7))
+        {
+            var lesson = new Lesson
+            {
+                ScheduleId = schedule.ScheduleId,
+                ClassSubjectId = schedule.ClassSubjectId,
+                Date = date,
+            };
+
+            lessons.Add(lesson);
+        }
+
+        await _unitOfWork.Lessons.AddRangeAsync(lessons);
 
         await _unitOfWork.SaveChangesAsync();
     }
 
-    public async Task UpdateLessonAsync(Guid lessonId, Lesson updatedLesson)
+    public async Task UpdateLessonsByScheduleAsync(Schedule schedule, TimeOnly newTime)
     {
-        var lesson = await _unitOfWork.Lessons.GetByIdAsync(lessonId);
+        var lessons = (await _unitOfWork.Lessons.GetBySchedule(schedule.ScheduleId))
+            .Where(l => l.Date >= DateTime.Now).ToList();
 
-        if (lesson == null)
+
+        if (lessons == null)
+        {
+            throw new NotFoundException($"Запись Lesson с ScheduleId {schedule.ScheduleId}");
+        }
+
+        foreach (var lesson in lessons)
+        {
+            lesson.Date = new DateTime(DateOnly.FromDateTime(lesson.Date), newTime);
+        }
+
+        await _unitOfWork.SaveChangesAsync();
+    }
+
+    public async Task UpdateLessonAsync(Guid lessonId, Lesson lesson)
+    {
+        var lessonEntity = await _unitOfWork.Lessons.GetByIdAsync(lessonId);
+
+        if (lessonEntity == null)
         {
             throw new NotFoundException($"Запись Lesson с ID {lessonId} не найдена.");
         }
 
-        _mapper.Map(updatedLesson, lesson);
+        _mapper.Map(lesson, lessonEntity);
 
-        _unitOfWork.Lessons.Update(lesson);
+        _unitOfWork.Lessons.Update(lessonEntity);
 
         await _unitOfWork.SaveChangesAsync();
     }
+
+
 
     public async Task DeleteLessonAsync(Guid lessonId)
     {
@@ -100,4 +142,6 @@ public class LessonService : ILessonService
 
         await _unitOfWork.SaveChangesAsync();
     }
+
+
 }

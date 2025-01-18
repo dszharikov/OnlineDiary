@@ -29,14 +29,6 @@ public class HomeworkController : BaseController
         _updateHomeworkValidator = updateHomeworkValidator;
     }
 
-    [HttpGet]
-    public async Task<IActionResult> GetHomeworks()
-    {
-        var homeworks = await _homeworkService.GetAllHomeworksAsync();
-
-        return Ok(_mapper.Map<IEnumerable<HomeworkDto>>(homeworks));
-    }
-
     [HttpGet("{homeworkId}")]
     public async Task<IActionResult> GetHomeworkById(Guid homeworkId)
     {

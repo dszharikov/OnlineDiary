@@ -36,14 +36,14 @@ public class ClassService : IClassService
 
     public async Task<PaginationResponseDto<Class>> GetClassesAsync(PaginationRequestDto paginationRequest)
     {
-        var classes = await _unitOfWork.Classes.GetAllAsync();
+        var classes = _unitOfWork.Classes.GetAllAsync();
 
         return await _paginationService.PaginateAsync(classes, paginationRequest);
     }
 
     public async Task<IEnumerable<Class>> GetAllClassesAsync()
     {
-        var classesQuery = await _unitOfWork.Classes.GetAllAsync();
+        var classesQuery = _unitOfWork.Classes.GetAllAsync();
 
         var classes = classesQuery.ToList();
 

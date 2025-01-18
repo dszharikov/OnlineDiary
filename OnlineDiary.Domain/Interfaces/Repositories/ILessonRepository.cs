@@ -4,13 +4,9 @@ namespace OnlineDiary.Domain.Interfaces.Repositories;
 
 public interface ILessonRepository : IRepository<Lesson>
 {
-    Task<Lesson> GetByScheduleAndDateAsync(Guid scheduleId, DateTime date);
-    Task<IEnumerable<Lesson>> GetByDateAsync(DateTime date);
-
-    Task<IEnumerable<Lesson>> GetByDateRangeAndTeacherIdAsync(DateTime startDate, DateTime endDate, Guid teacherId);
-
-    Task<IEnumerable<Lesson>> GetByDateRangeAndStudentIdAsync(DateTime startDate, DateTime endDate, Guid classId);
-
-    Task<IEnumerable<Lesson>> GetByClassSubjectIdAndTermIdAsync(Guid classSubjectId, Guid termId);
-
+    Task AddRangeAsync(IEnumerable<Lesson> lessons);
+    Task<IEnumerable<Lesson>> GetByClassForWeekAsync(Guid classId, DateTime date);
+    Task<IEnumerable<Lesson>> GetByClassSubjectAndTermAsync(Guid classId, Guid subjectId, Guid termId);
+    Task<IQueryable<Lesson>> GetBySchedule(Guid scheduleId);
+    Task<IEnumerable<Lesson>> GetByTeacherForWeekAsync(Guid teacherId, DateTime date);
 }

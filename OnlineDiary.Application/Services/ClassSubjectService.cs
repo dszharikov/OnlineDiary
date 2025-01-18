@@ -53,7 +53,7 @@ public class ClassSubjectService : IClassSubjectService
     public async Task<PaginationResponseDto<ClassSubject>> GetClassSubjectsAsync(
         PaginationAndFilterRequestDto<ClassSubjectFilterRequestDto> paginationAndFilterRequestDto)
     {
-        var query = await _unitOfWork.ClassSubjects.GetAllAsync();
+        var query = _unitOfWork.ClassSubjects.GetAllAsync();
 
         query = _classSubjectFilter.Apply(query, paginationAndFilterRequestDto.Filter);
 

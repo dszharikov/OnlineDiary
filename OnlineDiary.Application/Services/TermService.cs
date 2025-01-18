@@ -36,7 +36,7 @@ public class TermService : ITermService
 
     public async Task<PaginationResponseDto<Term>> GetTermsAsync(PaginationRequestDto paginationRequest)
     {
-        var terms = await _unitOfWork.Terms.GetAllAsync();
+        var terms = _unitOfWork.Terms.GetAllAsync();
 
         return await _paginationService.PaginateAsync(terms, paginationRequest);
     }

@@ -12,7 +12,6 @@ public class Lesson
 
     public DateTime Date { get; set; }
     public bool Skip { get; set; }
-
     public string Topic { get; set; }
 
     // Навигационные свойства

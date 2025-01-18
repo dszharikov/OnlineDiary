@@ -42,7 +42,7 @@ public class ClassLevelSubjectService : IClassLevelSubjectService
     public async Task<PaginationResponseDto<ClassLevelSubject>> GetClassLevelSubjectsAsync(
         PaginationAndFilterRequestDto<ClassLevelSubjectFilterRequestDto> paginationAndFilterRequestDto)
     {
-        var query = await _unitOfWork.ClassLevelSubjects.GetAllAsync();
+        var query = _unitOfWork.ClassLevelSubjects.GetAllAsync();
 
         query = _classLevelSubjectFilter.Apply(query, paginationAndFilterRequestDto.Filter);
 

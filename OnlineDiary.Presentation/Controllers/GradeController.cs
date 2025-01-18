@@ -80,17 +80,20 @@ public class GradeController : BaseController
     public async Task<IActionResult> EditGrade(Guid id, UpdateGradeDto dto)
     {
         await ValidateAsync(_updateGradeValidator, dto);
-        
-        var grade = _mapper.Map<Grade>(dto);
 
+        // get grade by id from db
+        var grade = await _gradeService.GetGradeByIdAsync(id);
+
+        // authorization for editing grade
         var authorized = await _authorizationService.AuthorizeAsync(grade, "CanEditGrade");
         if (!authorized)
         {
             return Forbid();
         }
 
+        _mapper.Map(dto, grade);
 
-        await _gradeService.UpdateGradeAsync(id, grade);
+        await _gradeService.UpdateGradeAsync(grade);
         return NoContent();
     }
 }

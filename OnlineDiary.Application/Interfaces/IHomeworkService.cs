@@ -5,7 +5,6 @@ namespace OnlineDiary.Application.Interfaces;
 public interface IHomeworkService
 {
     Task<Homework> GetHomeworkByIdAsync(Guid homeworkId);
-    Task<IEnumerable<Homework>> GetAllHomeworksAsync();
     Task<IEnumerable<Homework>> GetActualHomeworksByStudentIdAsync(Guid studentId);
     Task<Homework> GetHomeworkByLessonIdAsync(Guid lessonId);
     Task CreateHomeworkAsync(Homework dto);

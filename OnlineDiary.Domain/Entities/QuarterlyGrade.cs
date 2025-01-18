@@ -9,7 +9,7 @@ public class QuarterlyGrade
 
     public Guid StudentId { get; set; } // Внешний ключ к Student
 
-    public Guid SubjectId { get; set; } // Внешний ключ к Subject
+    public Guid ClassSubjectId { get; set; } // Внешний ключ к ClassSubject
 
     public Guid TermId { get; set; } // Внешний ключ к Term
 
@@ -20,7 +20,7 @@ public class QuarterlyGrade
     // Навигационные свойства
     public Student Student { get; set; }
 
-    public Subject Subject { get; set; }
+    public ClassSubject ClassSubject { get; set; }
 
     public Term Term { get; set; }
 

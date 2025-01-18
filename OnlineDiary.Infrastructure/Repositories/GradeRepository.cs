@@ -3,32 +3,47 @@ using OnlineDiary.Domain.Entities;
 using OnlineDiary.Domain.Interfaces.Repositories;
 using OnlineDiary.Infrastructure.Data;
 
-namespace OnlineDiary.Infrastructure.Repositories
+namespace OnlineDiary.Infrastructure.Repositories;
+
+public class GradeRepository : BaseRepository<Grade>, IGradeRepository
 {
-    public class GradeRepository : BaseRepository<Grade>, IGradeRepository
+    public GradeRepository(SchoolDbContext context) : base(context) { }
+
+    // Получить оценки студента за учебный период
+    public async Task<IEnumerable<Grade>> GetGradesForStudentByTermAsync(Guid studentId, Guid termId)
     {
-        public GradeRepository(SchoolDbContext context) : base(context) { }
+        return await _dbSet
+            .Include(g => g.Lesson)
+            .ThenInclude(l => l.Schedule)
+            .Where(g => g.StudentId == studentId && g.Lesson.Schedule.TermId == termId)
+            .ToListAsync();
+    }
 
-        // Получить оценки студента за учебный период
-        public async Task<IEnumerable<Grade>> GetGradesForStudentByTermAsync(Guid studentId, Guid termId)
-        {
-            return await _dbSet
-                .Include(g => g.Lesson)
-                .ThenInclude(l => l.Schedule)
-                .Where(g => g.StudentId == studentId && g.Lesson.Schedule.TermId == termId)
-                .ToListAsync();
-        }
+    // Получить оценки по конкретному уроку за учебный период
+    public async Task<IEnumerable<Grade>> GetGradesByClassSubjectAndTermAsync(Guid classSubjectId, Guid termId)
+    {
+        var grades = await _dbSet
+            .Include(g => g.Lesson) // Подключаем уроки
+            .ThenInclude(l => l.Schedule) // Подключаем расписание
+            .Where(g => g.Lesson.ClassSubjectId == classSubjectId && g.Lesson.Schedule.TermId == termId) // Фильтрация по ClassSubjectId и TermId
+            .ToListAsync();
 
-        // Получить оценки по конкретному уроку за учебный период
-        public async Task<IEnumerable<Grade>> GetGradesByClassSubjectAndTermAsync(Guid classSubjectId, Guid termId)
-        {
-            var grades = await _dbSet
-                .Include(g => g.Lesson) // Подключаем уроки
-                .ThenInclude(l => l.Schedule) // Подключаем расписание
-                .Where(g => g.Lesson.ClassSubjectId == classSubjectId && g.Lesson.Schedule.TermId == termId) // Фильтрация по ClassSubjectId и TermId
-                .ToListAsync();
+        return grades;
+    }
 
-            return grades;
-        }
+    public override async Task<Grade> GetByIdAsync(Guid id)
+    {
+        return await _dbSet
+            .Include(g => g.Lesson)
+            .ThenInclude(l => l.Schedule)
+            // schedule
+            .Include(g => g.Student)
+            .ThenInclude(s => s.Class)
+            .ThenInclude(c => c.HomeroomTeacher)
+            // homeroom teacher & student
+            .Include(g => g.Lesson)
+            .ThenInclude(l => l.ClassSubject)
+            // class subject
+            .FirstOrDefaultAsync(g => g.GradeId == id);
     }
 }

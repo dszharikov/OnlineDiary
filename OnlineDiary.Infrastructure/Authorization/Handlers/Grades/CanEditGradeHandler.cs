@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Authorization;
 using OnlineDiary.Domain.Entities;
 using OnlineDiary.Domain.Interfaces;
-using OnlineDiary.Infrastructure.Authorization.Requirements.Grade;
+using OnlineDiary.Infrastructure.Authorization.Requirements.Grades;
 using System.Security.Claims;
 
-namespace OnlineDiary.Infrastructure.Authorization.Handlers;
+namespace OnlineDiary.Infrastructure.Authorization.Handlers.Grades;
 
 public class CanEditGradeHandler : AuthorizationHandler<CanEditGradeRequirement, Grade>
 {
@@ -19,7 +19,7 @@ public class CanEditGradeHandler : AuthorizationHandler<CanEditGradeRequirement,
     {
         var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-        var lesson = await _unitOfWork.Lessons.GetByIdAsync(resource.LessonId);
+        var lesson = resource.Lesson;
 
         // Проверка, что учитель, который поставил оценку, может ее редактировать
         if (lesson.ClassSubject.TeacherId.ToString() == userId || context.User.IsInRole("Director"))

@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Authorization;
 using OnlineDiary.Domain.Entities;
-using OnlineDiary.Infrastructure.Authorization.Requirements.Grade;
+using OnlineDiary.Infrastructure.Authorization.Requirements.Grades;
 using System.Security.Claims;
 
-namespace OnlineDiary.Infrastructure.Authorization.Handlers;
+namespace OnlineDiary.Infrastructure.Authorization.Handlers.Grades;
 
 public class CanViewGradeHandler : AuthorizationHandler<CanViewGradeRequirement, Grade>
 {
@@ -15,7 +15,7 @@ public class CanViewGradeHandler : AuthorizationHandler<CanViewGradeRequirement,
         // Проверка, что студент, учитель или директор может просматривать оценки
         if (resource.Student.UserId.ToString() == userId ||
             resource.Lesson.ClassSubject.TeacherId.ToString() == userId ||
-            resource.Lesson.ClassSubject.Class.HomeroomTeacherId.ToString() == userId ||
+            resource.Student.Class.HomeroomTeacherId.ToString() == userId ||
             context.User.IsInRole("Director"))
         {
             context.Succeed(requirement);

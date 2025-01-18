@@ -49,7 +49,7 @@ public class StudentService : IStudentService
     public async Task<PaginationResponseDto<Student>> GetStudentsAsync(
         PaginationAndFilterRequestDto<StudentFilterRequestDto> paginationAndFilterRequest)
     {
-        var query = await _unitOfWork.Students.GetAllAsync();
+        var query = _unitOfWork.Students.GetAllAsync();
 
         query = _studentFilter.Apply(query, paginationAndFilterRequest.Filter);
 

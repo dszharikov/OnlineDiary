@@ -42,7 +42,7 @@ public class TeacherService : ITeacherService
     public async Task<PaginationResponseDto<Teacher>> GetTeachersAsync(
         PaginationAndFilterRequestDto<TeacherFilterRequestDto> paginationRequestDto)
     {
-        var query = await _unitOfWork.Teachers.GetAllAsync();
+        var query = _unitOfWork.Teachers.GetAllAsync();
 
         query = _teacherFilter.Apply(query, paginationRequestDto.Filter);
 
